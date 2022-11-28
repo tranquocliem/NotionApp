@@ -26,7 +26,7 @@ testRouter.get("/getData", async (req, res) => {
   try {
     const data = await Test.find();
 
-    res.status(200).json(data);
+    res.status(200).json({ data, status: true });
   } catch (error) {
     res.status(203).json(error);
   }
