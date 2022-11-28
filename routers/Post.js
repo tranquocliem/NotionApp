@@ -28,8 +28,14 @@ postRouter.post(
             writer,
           });
           const dataPost = await newPost.save(newPost);
-
-          return res.status(200).json(dataPost);
+          if (dataPost) {
+            return res
+              .status(200)
+              .json({ message: "Tạo Bài Viết Thành Công", status: true });
+          }
+          return res
+            .status(200)
+            .json({ message: "Tạo Bài Viết Không Thành Công", status: false });
         } else {
           return res.status(201).json({
             message: "Danh Sách Không Tồn Tại",
@@ -43,10 +49,18 @@ postRouter.post(
         });
         const dataPost = await newPost.save(newPost);
 
-        return res.status(200).json(dataPost);
+        if (dataPost) {
+          return res
+            .status(200)
+            .json({ message: "Tạo Bài Viết Thành Công", status: true });
+        } else {
+          return res
+            .status(200)
+            .json({ message: "Tạo Bài Viết Không Thành Công", status: false });
+        }
       }
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -61,7 +75,7 @@ postRouter.get(
 
       return res.status(200).json(dataPost);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -77,7 +91,7 @@ postRouter.get(
 
       return res.status(200).json(dataPost);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -93,7 +107,79 @@ postRouter.get(
 
       return res.status(200).json(dataPost);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
+    }
+  }
+);
+
+//load post by category
+postRouter.get(
+  "/getPostByCategory/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const writer = req.user.id;
+    try {
+      const dataPost = await Post.find({ category: id, writer });
+
+      return res.status(200).json(dataPost);
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
+// update post
+postRouter.patch(
+  "/updatePost/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const writer = req.user.id;
+    const update = req.body;
+
+    try {
+      const dataPost = await Post.findOneAndUpdate(
+        { _id: id, writer: writer },
+        update,
+        { new: true }
+      );
+      if (dataPost) {
+        return res
+          .status(200)
+          .json({ message: "Cập Nhật Bài Viết Thành Công", status: true });
+      }
+      return res
+        .status(203)
+        .json({ message: "Cập Nhật Bài Viết Không Thành Công", status: false });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
+// delete post
+postRouter.delete(
+  "/deletePost/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const writer = req.user.id;
+    try {
+      const data = await Post.findOneAndDelete({ _id: id, writer: writer });
+
+      if (data) {
+        return res.status(200).json({
+          message: "Xóa Bài Viết Thành Công",
+          status: true,
+        });
+      }
+      return res.status(200).json({
+        message: "Xóa Bài Viết Không Thành Công",
+        status: false,
+      });
+    } catch (error) {
+      return res.status(200).json(error);
     }
   }
 );

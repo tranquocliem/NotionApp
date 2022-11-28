@@ -18,12 +18,18 @@ categoryRouter.post(
     try {
       const data = await newCategory.save(newCategory);
 
-      return res.status(200).json({
-        data,
-        message: "Tạo Danh Sách Thành Công",
-      });
+      if (data) {
+        return res.status(200).json({
+          data,
+          message: "Tạo Danh Sách Thành Công",
+          status: true,
+        });
+      }
+      return res
+        .status(200)
+        .json({ message: "Tạo Danh Sách Không Thành Công", status: false });
     } catch (error) {
-      return res.json({
+      return res.status(500).json({
         // message: error.message,
         error,
       });
@@ -41,7 +47,7 @@ categoryRouter.get(
 
       return res.status(200).json(dataCategory);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -57,7 +63,7 @@ categoryRouter.get(
 
       return res.status(200).json(dataCategory);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -74,7 +80,7 @@ categoryRouter.get(
 
       return res.status(200).json(dataCategory);
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -97,16 +103,18 @@ categoryRouter.post(
         update,
         { new: true }
       );
-      if (data === null) {
-        return res.status(201).json({
-          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+      if (data) {
+        return res.status(200).json({
+          message: "Cập Nhật Danh Sách Thành Công",
+          status: true,
         });
       }
-      return res.status(201).json({
-        message: "Cập Nhật Thành Công",
+      return res.status(203).json({
+        message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+        status: false,
       });
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );
@@ -121,16 +129,18 @@ categoryRouter.delete(
 
     try {
       const data = await Category.findOneAndDelete({ _id: id, writer: writer });
-      if (data === null) {
-        return res.status(201).json({
-          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+      if (data) {
+        return res.status(200).json({
+          message: "Xóa Danh Sách Thành Công",
+          status: true,
         });
       }
-      return res.status(201).json({
-        message: "Xóa Thành Công",
+      return res.status(203).json({
+        message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+        status: false,
       });
     } catch (error) {
-      return res.status(203).json(error);
+      return res.status(500).json(error);
     }
   }
 );

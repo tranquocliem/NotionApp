@@ -15,10 +15,11 @@ app.use(express.json());
 //kết nối với database
 
 // const db = require("./configs/key").mongoURI;
-const db = "mongodb://localhost:27017/NotionApp";
+const db = process.env.URL_MONGODB;
+// const db = "mongodb://localhost:27017/NotionApp";
 
 mongoose
-  .connect(process.env.URL_MONGODB, {
+  .connect(db, {
     useCreateIndex: true,
     useNewUrlParser: true,
     useUnifiedTopology: true,
