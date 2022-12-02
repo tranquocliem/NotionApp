@@ -1,0 +1,82 @@
+[
+  {
+    "id": "L001",
+    "name": "Lê Trương Thiên Nhi",
+    "department": "Nhân Sự",
+    "position": "Giám Đốc Điều Hành",
+    "datastart": "Không Xác Định",
+    "sdt": "0782872822",
+    "status": "Đang Làm",
+    "avatar": "nhi.jfif"
+  },
+  {
+    "id": "L002",
+    "name": "Du Phúc Thi Giao",
+    "department": "Dev",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0902157007",
+    "status": "Đang Làm",
+    "avatar": "giao.jpg"
+  },
+  {
+    "id": "L003",
+    "name": "Trần Văn Hacker",
+    "department": "Anonymous",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0988979699",
+    "status": "Đang Làm",
+    "avatar": "hacker.jpg"
+  },
+  {
+    "id": "L004",
+    "name": "Nguyễn Thành Chung",
+    "department": "IT Support",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0888867899",
+    "status": "Đang Làm",
+    "avatar": "chung.jpg"
+  },
+  {
+    "id": "L005",
+    "name": "Nguyễn Thị Hồng Nhi",
+    "department": "Social",
+    "position": "Leader",
+    "datastart": "07/11/2022",
+    "sdt": "0888867899",
+    "status": "Đang Làm",
+    "avatar": "hong_nhi.png"
+  },
+  {
+    "id": "L006",
+    "name": "Đinh Nguyễn Minh Uyên",
+    "department": "QA",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0888867899",
+    "status": "Đang Làm",
+    "avatar": "minh_uyen.gif"
+  },
+  {
+    "id": "L007",
+    "name": "Mai Thành Hưng",
+    "department": "R & D",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0888867899",
+    "status": "Đang Làm",
+    "avatar": "thanh_hung.jfif"
+  },
+  {
+    "id": "L008",
+    "name": "Phan Công Hoàng",
+    "department": "Content",
+    "position": "Leader",
+    "datastart": "10/11/2022",
+    "sdt": "0888867899",
+    "status": "Đang Làm",
+    "avatar": "hacker.jpg"
+  }
+]

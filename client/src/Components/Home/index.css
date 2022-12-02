@@ -1,0 +1,4 @@
+.form-check .form-check-label input[type="checkbox"]+.input-helper:after {
+    content: '✔' !important;
+    /* color: green; */
+}

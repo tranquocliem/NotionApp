@@ -1,0 +1,52 @@
+[
+  {
+    "id": "DEV001",
+    "name": "Du Phúc Thi Giao",
+    "department": "Dev",
+    "position": "Leader",
+    "datastart": "01/01/2020",
+    "sdt": "0902157007",
+    "status": "Đang Làm",
+    "avatar": "giao.jpg"
+  },
+  {
+    "id": "DEV002",
+    "name": "Phạm Thiện Văn",
+    "department": "Dev",
+    "position": "Nhân Viên",
+    "datastart": "01/01/2020",
+    "sdt": "0785555229",
+    "status": "Đang Làm",
+    "avatar": "van.webp"
+  },
+  {
+    "id": "DEV003",
+    "name": "Trần Quốc Liêm",
+    "department": "Dev",
+    "position": "Nhân Viên",
+    "datastart": "07/11/2022",
+    "sdt": "0782872822",
+    "status": "Đang Làm",
+    "avatar": "avatar.jpg"
+  },
+  {
+    "id": "DEV004",
+    "name": "Nguyễn Thị Ngân",
+    "department": "Dev",
+    "position": "Nhân Viên",
+    "datastart": "01/09/2022",
+    "sdt": "0782872822",
+    "status": "Đang Làm",
+    "avatar": "ngan.png"
+  },
+  {
+    "id": "DEV005",
+    "name": "Nguyễn Tấn Thành",
+    "department": "Dev",
+    "position": "Nhân Viên",
+    "datastart": "01/11/2022",
+    "sdt": "0778153521",
+    "status": "Đang Làm",
+    "avatar": "thanh.png"
+  }
+]
