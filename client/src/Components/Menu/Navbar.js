@@ -48,7 +48,7 @@ function Navbar(props) {
                 data-toggle="dropdown"
                 aria-expanded="false"
               >
-                + Tạo Dự Án Mới
+                + Tạo Mới
               </button>
               <div
                 className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"

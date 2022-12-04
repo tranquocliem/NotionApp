@@ -10,8 +10,8 @@ function App() {
   const [visible, setVisiblity] = useState(true);
   return (
     <div className="App">
-      <Login />
-      {/* <div className="container-scroller">
+      {/* <Login /> */}
+      <div className="container-scroller">
         <Sidebar hide={visible} />
         <div className="container-fluid page-body-wrapper">
           <Navbar changeToggle={(data) => setVisiblity(!data)} />
@@ -22,7 +22,7 @@ function App() {
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

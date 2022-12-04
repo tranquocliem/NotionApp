@@ -21,7 +21,42 @@ const AccountSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      min: 6,
+    },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      default: null,
+    },
+    position: {
+      type: String,
+      default: "",
+    },
+    fullname: {
+      type: String,
+      default: "",
+    },
+    sdt: {
+      type: String,
+      default: "",
+    },
+    walletonus: {
+      type: String,
+      default: "",
+    },
+    avatar: {
+      type: String,
+      default:
+        "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png",
+    },
+    role: {
+      type: String,
+      enum: ["spadmin", "admin", "leader", "member"],
+      required: true,
+    },
+    status: {
+      type: Boolean,
+      required: true,
+      default: true,
     },
   },
   { timestamps: true }

@@ -16,7 +16,7 @@ app.use(express.json());
 
 // const db = require("./configs/key").mongoURI;
 const db = process.env.URL_MONGODB;
-// const db = "mongodb://localhost:27017/NotionApp";
+// const db = "mongodb://localhost:27017/TQLApp";
 
 mongoose
   .connect(db, {
@@ -30,6 +30,7 @@ mongoose
 
 //đường dẫn các api
 app.use("/api/account", require("./routers/Account"));
+app.use("/api/department", require("./routers/Department"));
 app.use("/api/category", require("./routers/Category"));
 app.use("/api/post", require("./routers/Post"));
 app.use("/api/test", require("./routers/Test"));

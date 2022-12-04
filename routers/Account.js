@@ -12,49 +12,259 @@ const NodeRSA = require("node-rsa");
 const fs = require("fs");
 const path = require("path");
 
-//tạo tài khoản cho loại candidate và recruiter (không cần gửi xác thực mail sử dung cho localhost)
-accRouter.post("/register", (req, res) => {
-  const { email, username, password } = req.body;
-  Account.findOne(
-    { $or: [{ username: username }, { email: email }] },
-    (err, user) => {
-      if (err)
-        res.status(500).json({
-          message: {
-            msgBody: "Có lỗi khi tìm kiếm với CSDL 1",
-            msgError: true,
-          },
+//add account
+accRouter.post(
+  "/addAccount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { email, username, password, role } = req.body;
+    const roleAcc = req.user.role;
+    if (roleAcc === "spadmin") {
+      try {
+        const checkAccount = await Account.findOne({
+          $or: [{ username, email }],
         });
-      else if (user) {
-        res.status(201).json({
-          message: {
-            msgBody: "Tên đăng nhập hoặc email đã tồn tại",
-            msgError: true,
-          },
-        });
-      } else {
-        const newAccount = new Account({ email, username, password });
-        newAccount.save((err) => {
-          if (err)
-            res.status(500).json({
+        if (checkAccount) {
+          return res.status(201).json({
+            message: {
+              msgBody: "Username hoặc email đã tồn tại",
+              msgError: true,
+            },
+          });
+        } else {
+          const newAccount = new Account({ email, username, password, role });
+          try {
+            const data = await newAccount.save(newAccount);
+            if (data) {
+              return res.status(200).json({
+                message: "Tạo Tài Khoản Thành Công",
+                status: true,
+              });
+            }
+            return res.status(203).json({
+              message: "Tạo Tài Khoản Không Thành Công",
+              status: false,
+            });
+          } catch (error) {
+            if (error.code === 11000) {
+              return res.status(203).json({
+                message: {
+                  msgBody: "Username hoặc email đã tồn tại",
+                  msgError: true,
+                },
+                error,
+              });
+            }
+            return res.status(500).json(error);
+          }
+        }
+      } catch (error) {
+        res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không Phận Sự, Vui Lòng Đi Chỗ Khác Dùm !!!",
+        status: false,
+      });
+    }
+  }
+);
+
+// add account by admin
+accRouter.post(
+  "/addAccountByAdmin",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { email, username, password, role, department, position } = req.body;
+    const roleAcc = req.user.role;
+
+    if (roleAcc === "admin") {
+      if (role !== "spadmin" && role !== "admin") {
+        try {
+          const checkAccount = await Account.findOne({
+            $or: [{ username, email }],
+          });
+          if (checkAccount) {
+            return res.status(201).json({
               message: {
-                msgBody: "Có lỗi khi thêm tài khoản vào CSDL 2",
+                msgBody: "Username hoặc email đã tồn tại",
                 msgError: true,
-                err,
               },
             });
-          else
-            res.status(200).json({
-              message: {
-                msgBody: "Tạo tài khoản thành công",
-                msgError: false,
-              },
+          } else {
+            const newAccount = new Account({
+              email,
+              username,
+              password,
+              role,
+              department,
+              position,
             });
+            try {
+              const data = await newAccount.save(newAccount);
+              if (data) {
+                return res.status(200).json({
+                  message: "Tạo Tài Khoản Thành Công",
+                  status: true,
+                });
+              }
+              return res.status(203).json({
+                message: "Tạo Tài Khoản Không Thành Công",
+                status: false,
+              });
+            } catch (error) {
+              if (error.code === 11000) {
+                return res.status(203).json({
+                  message: {
+                    msgBody: "Username hoặc email đã tồn tại",
+                    msgError: true,
+                  },
+                  error,
+                });
+              }
+              return res.status(500).json(error);
+            }
+          }
+        } catch (error) {
+          return res.status(500).json(error);
+        }
+      } else {
+        return res.status(203).json({
+          message: "Bạn Không Được Phép Thêm Loại Tài Khoản Này",
+          status: false,
         });
       }
+    } else {
+      return res.status(203).json({
+        message: "Không Có Phận Sự, Vui Lòng Đi Chỗ Khác Dùm Nhé !!!",
+      });
     }
-  );
-});
+  }
+);
+
+// get my account
+accRouter.get(
+  "/getMyAccount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.user;
+    try {
+      const dataUser = await Account.findOne({ _id: id }, { password: 0 });
+      return res.status(200).json({ dataUser, status: true });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
+//get all account
+accRouter.get(
+  "/getAccount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const roleAcc = req.user.role;
+    if (roleAcc === "spadmin") {
+      try {
+        const dataUser = await Account.find({}, { password: 0 });
+        return res.status(200).json({ dataUser, status: true });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không Phận Sự, Vui Lòng Đi Chỗ Khác Dùm !!!",
+        status: false,
+      });
+    }
+  }
+);
+
+//get account by admin
+accRouter.get(
+  "/getAccountByAdmin",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const roleAcc = req.user.role;
+    if (roleAcc !== "spadmin") {
+      try {
+        const dataUser = await Account.find(
+          {
+            $or: [{ role: "member" }, { role: "leader" }],
+          },
+          { password: 0 }
+        );
+        return res.status(200).json({ dataUser, status: true });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không Phận Sự, Vui Lòng Đi Chỗ Khác Dùm !!!",
+        status: false,
+      });
+    }
+  }
+);
+
+// update my account
+accRouter.patch(
+  "/updateAccount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const update = req.body;
+    const { id } = req.user;
+    try {
+      const user = await Account.findOneAndUpdate({ _id: id }, update, {
+        new: true,
+      });
+      if (user) {
+        return res.status(200).json({
+          message: "Cập Nhật Thông Tin Thành Công",
+          status: true,
+        });
+      }
+      return res.status(203).json({
+        message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+        status: false,
+      });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
+// delete Department by user
+accRouter.delete(
+  "/deleteAccount/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    const { role } = req.user;
+    if (role === "spadmin") {
+      try {
+        const data = await Account.findOneAndDelete({
+          _id: id,
+        });
+        if (data) {
+          return res.status(200).json({
+            message: "Xóa Tài Khoản Thành Công",
+            status: true,
+          });
+        }
+        return res.status(203).json({
+          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+          status: false,
+        });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không phận sự, vui lòng đi chỗ khác dùm !!!",
+      });
+    }
+  }
+);
 
 //login
 const signToken = (userID) => {
@@ -191,12 +401,13 @@ accRouter.get(
   "/authenticated",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { _id, username } = req.user;
+    const { _id, username, role } = req.user;
     res.status(200).json({
       isAuthenticated: true,
       user: {
         _id,
         username,
+        role,
       },
     });
   }
