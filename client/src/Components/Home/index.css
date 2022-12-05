@@ -2,3 +2,12 @@
     content: '✔' !important;
     /* color: green; */
 }
+
+.apexcharts-legend {
+    display: none;
+    visibility: hidden;
+}
+
+.myChart {
+    margin-left: 70px;
+}

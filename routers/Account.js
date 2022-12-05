@@ -4,6 +4,7 @@ const passport = require("passport");
 const passportConfig = require("../configs/passport");
 const JWT = require("jsonwebtoken");
 const Account = require("../models/Account");
+const Department = require("../models/Department");
 const bcrypt = require("bcrypt");
 const lodash = require("lodash");
 const { google } = require("googleapis");
@@ -17,7 +18,7 @@ accRouter.post(
   "/addAccount",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { email, username, password, role } = req.body;
+    const { email, username, password, role, department, position } = req.body;
     const roleAcc = req.user.role;
     if (roleAcc === "spadmin") {
       try {
@@ -32,10 +33,22 @@ accRouter.post(
             },
           });
         } else {
-          const newAccount = new Account({ email, username, password, role });
+          const newAccount = new Account({
+            email,
+            username,
+            password,
+            role,
+            department,
+            position,
+          });
           try {
             const data = await newAccount.save(newAccount);
             if (data) {
+              const idUser = data._id;
+              await Department.findOneAndUpdate(
+                { _id: department },
+                { $push: { users: idUser } }
+              );
               return res.status(200).json({
                 message: "Tạo Tài Khoản Thành Công",
                 status: true,
@@ -103,6 +116,11 @@ accRouter.post(
             try {
               const data = await newAccount.save(newAccount);
               if (data) {
+                const idUser = data._id;
+                await Department.findOneAndUpdate(
+                  { _id: department },
+                  { $push: { users: idUser } }
+                );
                 return res.status(200).json({
                   message: "Tạo Tài Khoản Thành Công",
                   status: true,
@@ -211,8 +229,38 @@ accRouter.patch(
   "/updateAccount",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const update = req.body;
-    const { id } = req.user;
+    const { fullname, sdt, walletonus, avatar } = req.body;
+    const update = {
+      fullname,
+      sdt,
+      walletonus,
+      avatar,
+    };
+    const updateSPAdmin = req.body;
+    const { id, role } = req.user;
+    if (role === "spadmin") {
+      try {
+        const user = await Account.findOneAndUpdate(
+          { _id: id },
+          updateSPAdmin,
+          {
+            new: true,
+          }
+        );
+        if (user) {
+          return res.status(200).json({
+            message: "Cập Nhật Thông Tin Thành Công",
+            status: true,
+          });
+        }
+        return res.status(203).json({
+          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+          status: false,
+        });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    }
     try {
       const user = await Account.findOneAndUpdate({ _id: id }, update, {
         new: true,
@@ -233,7 +281,129 @@ accRouter.patch(
   }
 );
 
-// delete Department by user
+// update account by spadmin
+accRouter.patch(
+  "/updateAccountBySpAdmin/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const updateSPAdmin = req.body;
+    // const { department } = req.body;
+
+    const { role } = req.user;
+    const { id } = req.params;
+    if (role === "spadmin") {
+      try {
+        const data = await Account.findById({
+          _id: id,
+        });
+
+        const user = await Account.findOneAndUpdate(
+          { _id: id },
+          updateSPAdmin,
+          {
+            new: true,
+          }
+        );
+
+        const oldDepartment = data.department;
+
+        if (user) {
+          if (updateSPAdmin.department && oldDepartment) {
+            if (oldDepartment !== updateSPAdmin.department) {
+              await Department.findOneAndUpdate(
+                { _id: oldDepartment },
+                { $pull: { users: id } }
+              );
+              await Department.findOneAndUpdate(
+                { _id: updateSPAdmin.department },
+                { $push: { users: id } }
+              );
+            }
+          }
+          return res.status(200).json({
+            message: "Cập Nhật Thông Tin Thành Công",
+            status: true,
+          });
+        }
+        return res.status(203).json({
+          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+          status: false,
+        });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không phận sự, vui lòng đi chỗ khác dùm!!!",
+        status: false,
+      });
+    }
+  }
+);
+
+// update account by admin
+accRouter.patch(
+  "/updateAccountByAdmin/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { department, position } = req.body;
+    const { role } = req.user;
+    const { id } = req.params;
+    // const { department } = req.body;
+    const updates = {
+      department,
+      position,
+    };
+
+    const data = await Account.findById({
+      _id: id,
+    });
+
+    console.log(data.role);
+
+    if (role === "admin" && data.role !== "spadmin" && data.role !== "admin") {
+      try {
+        const user = await Account.findOneAndUpdate({ _id: id }, updates, {
+          new: true,
+        });
+
+        const oldDepartment = data.department;
+
+        if (user) {
+          if (updates.department && oldDepartment) {
+            if (oldDepartment !== updates.department) {
+              await Department.findOneAndUpdate(
+                { _id: oldDepartment },
+                { $pull: { users: id } }
+              );
+              await Department.findOneAndUpdate(
+                { _id: updates.department },
+                { $push: { users: id } }
+              );
+            }
+          }
+          return res.status(200).json({
+            message: "Cập Nhật Thông Tin Thành Công",
+            status: true,
+          });
+        }
+        return res.status(203).json({
+          message: "Tài Khoản Không Hợp Lệ Hoặc Dữ Liệu Không Tồn Tại",
+          status: false,
+        });
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không phận sự, vui lòng đi chỗ khác dùm!!!",
+        status: false,
+      });
+    }
+  }
+);
+
+// delete account
 accRouter.delete(
   "/deleteAccount/:id",
   passport.authenticate("jwt", { session: false }),
@@ -246,6 +416,11 @@ accRouter.delete(
           _id: id,
         });
         if (data) {
+          const idDepartment = data.department;
+          await Department.findOneAndUpdate(
+            { _id: idDepartment },
+            { $pull: { users: id } }
+          );
           return res.status(200).json({
             message: "Xóa Tài Khoản Thành Công",
             status: true,
@@ -311,24 +486,16 @@ accRouter.get(
 );
 
 //đổi mật khẩu tài khoản
-accRouter.post(
+accRouter.patch(
   "/changePass",
   passport.authenticate("jwt", { session: false }),
-  (req, res) => {
+  async (req, res) => {
     const { old_Password, password, configPassword } = req.body;
-    const { username, email } = req.user;
-    Account.findOne(
-      { $or: [{ username: username }, { email: email }] },
-      (err, user) => {
-        if (err || !user) {
-          return res.status(500).json({
-            message: {
-              msgBody: "Lỗi hoặc tài khoản không tồn tại",
-              msgError: true,
-            },
-            err,
-          });
-        }
+    const { id } = req.user;
+
+    try {
+      const user = await Account.findById({ _id: id });
+      if (user) {
         if (password !== configPassword) {
           return res.status(400).json({
             message: {
@@ -337,14 +504,6 @@ accRouter.post(
             },
           });
         }
-        //cần nhập pass củ và so sánh với pass với csdl
-        // bcrypt.compare(
-        //   old_Password,
-        //   req.user.password,
-        //   function (err, isMatch) {
-        //     console.log(err);
-        //   }
-        // );
         bcrypt.compare(
           old_Password,
           req.user.password,
@@ -386,13 +545,16 @@ accRouter.post(
                     msgBody: "Thay Đổi Mật Khẩu Thành Công",
                     msgError: false,
                   },
+                  status: true,
                 });
               });
             }
           }
         );
       }
-    );
+    } catch (error) {
+      return res.status(500).json(error);
+    }
   }
 );
 

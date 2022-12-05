@@ -9,6 +9,12 @@ const DepartmentSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Account",
   },
+  users: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Account",
+    },
+  ],
 });
 
-module.exports = mongoose.model("DepartmentSchema", DepartmentSchema);
+module.exports = mongoose.model("Department", DepartmentSchema);
