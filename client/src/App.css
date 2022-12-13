@@ -95,3 +95,19 @@
   position: absolute;
   bottom: 0;
 } */
+
+.nav-link.active {
+  background: #0f1015;
+  position: relative;
+}
+
+.nav-link.active::before {
+  content: "";
+  width: 3px;
+  height: 100%;
+  background: #0090e7;
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+}

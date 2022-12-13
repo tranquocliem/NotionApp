@@ -9,5 +9,19 @@
 }
 
 .myChart {
-    margin-left: 70px;
+    /* margin-left: 150px; */
+}
+
+.chart_donut {
+    width: 555px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media (max-width:1444px) {
+    .chart_component .stretch-card {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
 }

@@ -1,34 +1,29 @@
 import React, { createContext, useEffect, useState } from "react";
-import AuthService from "../Services/AccountService";
+import { isAuthenticated as chechAuth } from "../Service/AccountService";
 
 export const AuthContext = createContext();
 
-export default ({ children }) => {
+const Auth = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    AuthService.isAuthenticated().then((data) => {
-      setUser(data.user);
-      setIsAuthenticated(data.isAuthenticated);
-      setIsLoaded(true);
-    });
-  }, []);
+    const apiAuth = async () => {
+      const data = await chechAuth();
+      if (data) {
+        setUser(data.user);
+        setIsAuthenticated(data.isAuthenticated);
+      }
+    };
+    apiAuth();
+  }, [isAuthenticated]);
   return (
-    <div>
-      {!isLoaded ? (
-        <>
-          <div className="loading-web"></div>
-          <img className="loading-img" alt="imgloading" src="assets/img/loading.gif" />
-        </>
-      ) : (
-        <AuthContext.Provider
-          value={{ user, setUser, isAuthenticated, setIsAuthenticated }}
-        >
-          {children}
-        </AuthContext.Provider>
-      )}
-    </div>
+    <AuthContext.Provider
+      value={{ user, setUser, isAuthenticated, setIsAuthenticated }}
+    >
+      {children}
+    </AuthContext.Provider>
   );
 };
+
+export default Auth;

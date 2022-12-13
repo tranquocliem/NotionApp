@@ -1,0 +1,72 @@
+import { useEffect, useState } from "react";
+import DataListDepartment from "./DataListDepartment";
+import { getDepartment } from "../../Service/DepartmentService";
+
+function ListDepartment() {
+  const [listDepartment, setListDepartment] = useState([]);
+  const [search, setSearch] = useState("");
+  useEffect(() => {
+    async function getAPI() {
+      const data = await getDepartment();
+      if (data) {
+        setListDepartment(data);
+      }
+    }
+    getAPI();
+  }, []);
+
+  return (
+    <>
+      {listDepartment.length > 0 ? (
+        <div className="row">
+          <div className="col-12 grid-margin">
+            <div className="card">
+              <div className="card-body">
+                <h4 className="card-title">Danh Sách Tất Cả Bộ Phận</h4>
+                <form className="nav-link p-0 w-50 search">
+                  <input
+                    type="search"
+                    name="search"
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                    className="form-control text-light"
+                    placeholder="Tìm kiếm bộ phận"
+                  />
+                </form>
+                <div className="table-responsive my-table">
+                  <table className="table">
+                    <thead>
+                      <tr className="text-left">
+                        <th className="text-center"> Tên bộ phận </th>
+                        <th className="text-center"> Nhân sự </th>
+                        <th className="text-center"> Người tạo </th>
+                        <th className="text-center"> Hành động </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {listDepartment.map((data, i) => {
+                        return <DataListDepartment department={data} key={i} />;
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{ height: "100%", opacity: "75%" }}
+          className="d-flex align-items-center justify-content-center"
+        >
+          <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+export default ListDepartment;

@@ -1,0 +1,22 @@
+.nav-link.activeNav {
+    background: #0f1015;
+    position: relative;
+}
+
+@media (max-width:320px) {
+
+    .navbar .navbar-menu-wrapper .navbar-nav .noti {
+        display: none;
+        visibility: hidden;
+    }
+}
+
+@media (max-width:280px) {
+    .navbar .logo_tql {
+        width: 100%;
+    }
+
+    .navbar .logo_tql .brand-logo-mini {
+        padding: 0;
+    }
+}

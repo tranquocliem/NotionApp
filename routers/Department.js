@@ -22,7 +22,6 @@ departmentRouter.post(
 
         if (data) {
           return res.status(200).json({
-            data,
             message: "Tạo Bộ Phân Thành Công",
             status: true,
           });
@@ -48,7 +47,11 @@ departmentRouter.get(
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     try {
-      const dataDepartment = await Department.find();
+      const dataDepartment = await Department.find()
+        .populate({
+          path: "writer",
+        })
+        .sort({ name: 1 });
 
       return res.status(200).json(dataDepartment);
     } catch (error) {
@@ -131,7 +134,7 @@ departmentRouter.patch(
 
 // delete Department by user
 departmentRouter.delete(
-  "/deleteDepartmentByUser/:id",
+  "/deleteDepartment/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { id } = req.params;
@@ -159,6 +162,25 @@ departmentRouter.delete(
         message: "Không phận sự, vui lòng đi chỗ khác dùm !!!",
         status: false,
       });
+    }
+  }
+);
+
+// search Department
+departmentRouter.get(
+  "/searchDepartment",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const departs = await Department.find({
+        $text: { $search: `/${req.query.name}/` },
+      }).populate({
+        path: "writer",
+        select: "-password",
+      });
+      res.status(200).json({ departs });
+    } catch (error) {
+      return res.status(500).json(error);
     }
   }
 );

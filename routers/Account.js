@@ -12,6 +12,14 @@ const nodemailer = require("nodemailer");
 const NodeRSA = require("node-rsa");
 const fs = require("fs");
 const path = require("path");
+const Multer = require("../configs/Multer");
+const cloudinary = require("cloudinary").v2;
+
+cloudinary.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+});
 
 //add account
 accRouter.post(
@@ -27,10 +35,8 @@ accRouter.post(
         });
         if (checkAccount) {
           return res.status(201).json({
-            message: {
-              msgBody: "Username hoặc email đã tồn tại",
-              msgError: true,
-            },
+            message: "Username hoặc email đã tồn tại",
+            status: false,
           });
         } else {
           const newAccount = new Account({
@@ -61,10 +67,8 @@ accRouter.post(
           } catch (error) {
             if (error.code === 11000) {
               return res.status(203).json({
-                message: {
-                  msgBody: "Username hoặc email đã tồn tại",
-                  msgError: true,
-                },
+                message: "Username hoặc email đã tồn tại",
+                status: false,
                 error,
               });
             }
@@ -99,10 +103,8 @@ accRouter.post(
           });
           if (checkAccount) {
             return res.status(201).json({
-              message: {
-                msgBody: "Username hoặc email đã tồn tại",
-                msgError: true,
-              },
+              message: "Username hoặc email đã tồn tại",
+              status: false,
             });
           } else {
             const newAccount = new Account({
@@ -133,10 +135,8 @@ accRouter.post(
             } catch (error) {
               if (error.code === 11000) {
                 return res.status(203).json({
-                  message: {
-                    msgBody: "Username hoặc email đã tồn tại",
-                    msgError: true,
-                  },
+                  message: "Username hoặc email đã tồn tại",
+                  status: false,
                   error,
                 });
               }
@@ -167,7 +167,10 @@ accRouter.get(
   async (req, res) => {
     const { id } = req.user;
     try {
-      const dataUser = await Account.findOne({ _id: id }, { password: 0 });
+      const dataUser = await Account.findOne(
+        { _id: id },
+        { password: 0 }
+      ).populate({ path: "department", model: "Department" });
       return res.status(200).json({ dataUser, status: true });
     } catch (error) {
       return res.status(500).json(error);
@@ -180,19 +183,13 @@ accRouter.get(
   "/getAccount",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const roleAcc = req.user.role;
-    if (roleAcc === "spadmin") {
-      try {
-        const dataUser = await Account.find({}, { password: 0 });
-        return res.status(200).json({ dataUser, status: true });
-      } catch (error) {
-        return res.status(500).json(error);
-      }
-    } else {
-      return res.status(203).json({
-        message: "Không Phận Sự, Vui Lòng Đi Chỗ Khác Dùm !!!",
-        status: false,
+    try {
+      const dataUser = await Account.find({}, { password: 0 }).populate({
+        path: "department",
       });
+      return res.status(200).json({ dataUser, status: true });
+    } catch (error) {
+      return res.status(500).json(error);
     }
   }
 );
@@ -403,6 +400,97 @@ accRouter.patch(
   }
 );
 
+// Upload Image Avatar To Cloud
+accRouter.post(
+  "/uploadImage",
+  passport.authenticate("jwt", { session: false }),
+  Multer.array("file"),
+  async (req, res) => {
+    try {
+      let arrImages = [];
+      const files = req.files;
+      const { id } = req.user;
+      const promises = [];
+      for (const file of files) {
+        const { path } = file;
+        promises.push(
+          cloudinary.uploader.upload(path, {
+            resource_type: "auto",
+            public_id: id,
+            folder: "TQLApp/",
+            overwrite: true,
+          })
+        );
+      }
+
+      const datas = await Promise.all(promises);
+
+      for (const data of datas) {
+        arrImages.push({ public_id: id, url: data.secure_url });
+      }
+
+      return res.status(200).json({
+        success: false,
+        message: {
+          msgBody: "Upload Ok!",
+          msgError: false,
+        },
+        data: arrImages,
+      });
+    } catch (error) {
+      return res.status(203).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
+//Delete Image Avatar In Cloud
+accRouter.delete(
+  "/destroyAvatar",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    try {
+      const { id } = req.user;
+      if (!id) {
+        return res.status(203).json({
+          success: false,
+          message: {
+            msgBody: "Hình ảnh không tồn tại",
+            msgError: true,
+          },
+        });
+      }
+      cloudinary.uploader.destroy(`TQLApp/${id}`, async (err, result) => {
+        if (err) throw err;
+
+        res.status(200).json({
+          success: true,
+          message: {
+            msgBody: "Xoá thành công",
+            msgError: false,
+          },
+          result,
+        });
+      });
+    } catch (error) {
+      return res.status(500).json({
+        success: false,
+        message: {
+          msgBody: "Lỗi!!!",
+          msgError: true,
+        },
+        error,
+      });
+    }
+  }
+);
+
 // delete account
 accRouter.delete(
   "/deleteAccount/:id",
@@ -458,7 +546,7 @@ accRouter.post(
   passport.authenticate("local", { session: false }),
   (req, res) => {
     if (req.isAuthenticated()) {
-      const { _id, username } = req.user;
+      const { _id, username, avatar, fullname } = req.user;
       let token = signToken(_id);
       public_key = fs.readFileSync(
         path.resolve(__dirname, "../configs/publickey.key")
@@ -470,7 +558,10 @@ accRouter.post(
         httpOnly: true,
         sameSite: true,
       });
-      res.status(200).json({ isAuthenticated: true, user: { _id, username } });
+      res.status(200).json({
+        isAuthenticated: true,
+        user: { _id, username, avatar, fullname },
+      });
     }
   }
 );
@@ -480,8 +571,12 @@ accRouter.get(
   "/logout",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    res.clearCookie("temp");
-    res.json({ user: { username: "" }, success: true });
+    try {
+      res.clearCookie("temp");
+      res.json({ user: { username: "" }, success: true });
+    } catch (error) {
+      res.json(error);
+    }
   }
 );
 
@@ -563,13 +658,15 @@ accRouter.get(
   "/authenticated",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    const { _id, username, role } = req.user;
+    const { _id, username, role, avatar, fullname } = req.user;
     res.status(200).json({
       isAuthenticated: true,
       user: {
         _id,
         username,
         role,
+        avatar,
+        fullname,
       },
     });
   }

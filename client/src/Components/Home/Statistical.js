@@ -1,13 +1,7 @@
-import "./index.css";
-import TableLeader from "../Table/TableLeader/TableLeader";
-import TableDev from "../Table/TableDev/TableDev";
-import Statistical from "./Statistical";
-import PieChart from "./PieChart";
-
-function Home() {
+function Statistical() {
   return (
     <>
-      {/* <div className="row">
+      <div className="row">
         <div className="col-xl-3 col-sm-6 grid-margin stretch-card">
           <div className="card">
             <div className="card-body">
@@ -102,14 +96,9 @@ function Home() {
             </div>
           </div>
         </div>
-      </div> */}
-
-      <Statistical />
-      <PieChart />
-      <TableLeader />
-      <TableDev />
+      </div>
     </>
   );
 }
 
-export default Home;
+export default Statistical;

@@ -1,5 +1,10 @@
-import avatar from "../../img/avatar.jpg";
+import { useContext } from "react";
+import { Link, NavLink } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import "./index.css";
 function Sidebar(props) {
+  const { user } = useContext(AuthContext);
+
   const styleColor = {
     primary: "#0090e7",
     info: "#8f5fe8",
@@ -11,30 +16,39 @@ function Sidebar(props) {
     <>
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-          <a
+          <Link
             className="sidebar-brand brand-logo text-success text_logo"
-            href="/"
+            to="/"
+            onClick={() => {
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }}
           >
             TQL App
-          </a>
-          <a
+          </Link>
+          <Link
             className="sidebar-brand brand-logo-mini text-success text_logo"
-            href="/"
+            to="/"
           >
             TQL
-          </a>
+          </Link>
         </div>
         <ul className="nav">
           <li className="nav-item profile">
             <div className="profile-desc">
               <div className="profile-pic">
                 <div className="count-indicator">
-                  <img className="img-xs rounded-circle " src={avatar} alt="" />
+                  <img
+                    className="img-xs rounded-circle "
+                    src={user && user.avatar}
+                    alt=""
+                  />
                   <span className="count bg-success"></span>
                 </div>
                 <div className="profile-name">
-                  <h5 className="mb-0 font-weight-normal">Trần Quốc Liêm</h5>
-                  <span>Super Admin</span>
+                  <h5 className="mb-0 font-weight-normal">
+                    {user && user.fullname ? user.fullname : "Không Xác Định"}
+                  </h5>
+                  <span className="text-uppercase">{user && user.role}</span>
                 </div>
               </div>
               {props.hide ? (
@@ -51,7 +65,10 @@ function Sidebar(props) {
                     className="dropdown-menu dropdown-menu-right sidebar-dropdown preview-list"
                     aria-labelledby="profile-dropdown"
                   >
-                    <a href="#!" className="dropdown-item preview-item">
+                    <Link
+                      to={`/tai-khoan/${user && user.username}`}
+                      className="dropdown-item preview-item"
+                    >
                       <div className="preview-thumbnail">
                         <div className="preview-icon bg-dark rounded-circle">
                           <i
@@ -65,7 +82,7 @@ function Sidebar(props) {
                           Tài Khoản
                         </p>
                       </div>
-                    </a>
+                    </Link>
                     <div className="dropdown-divider"></div>
                     <a href="#!" className="dropdown-item preview-item">
                       <div className="preview-thumbnail">
@@ -91,7 +108,7 @@ function Sidebar(props) {
             <span className="nav-link">Menu</span>
           </li>
           <li className="nav-item menu-items">
-            <a className="nav-link" href="/">
+            <NavLink exact className="nav-link" to="/">
               <span className="menu-icon">
                 <i
                   className="fa-solid fa-house"
@@ -99,27 +116,28 @@ function Sidebar(props) {
                 ></i>
               </span>
               <span className="menu-title">Trang Chủ</span>
-            </a>
+            </NavLink>
           </li>
           <div className="dropdown-divider"></div>
           <li className="nav-item menu-items">
-            <a className="nav-link" href="#!">
+            <NavLink to="/tat-ca-nhan-vien" className="nav-link" href="#!">
+              <span className="menu-icon">
+                {/* <i>👆</i> */}
+                <i>All</i>
+              </span>
+              <span className="menu-title">Tất Cả Nhân Viên</span>
+            </NavLink>
+          </li>
+          <li className="nav-item menu-items">
+            <NavLink className="nav-link" to="/danh-sach-truong-bo-phan">
               <span className="menu-icon">
                 <i
                   className="fa-solid fa-note-sticky"
                   color={styleColor.primary}
                 ></i>
               </span>
-              <span className="menu-title">Ghi Chú</span>
-            </a>
-          </li>
-          <li className="nav-item menu-items">
-            <a className="nav-link" href="#!">
-              <span className="menu-icon">
-                <i>👆</i>
-              </span>
-              <span className="menu-title">Ghi Chú Mới Nhất</span>
-            </a>
+              <span className="menu-title">Trưởng Bộ Phận</span>
+            </NavLink>
           </li>
           <li className="nav-item menu-items">
             <a className="nav-link" href="#!">
@@ -139,12 +157,12 @@ function Sidebar(props) {
           </li>
           <div className="dropdown-divider"></div>
           <li className="nav-item menu-items">
-            <a className="nav-link" href="#!">
+            <NavLink to="/danh-sach-bo-phan" className="nav-link">
               <span className="menu-icon">
                 <i className="fa-solid fa-list-ol" color={styleColor.info}></i>
               </span>
-              <span className="menu-title">Danh Sách</span>
-            </a>
+              <span className="menu-title">Danh Sách Bộ Phận</span>
+            </NavLink>
           </li>
           <li className="nav-item menu-items">
             <a className="nav-link" href="#!">
@@ -182,18 +200,7 @@ function Sidebar(props) {
               <span className="menu-title">Thống Kê</span>
             </a>
           </li>
-          <li className="nav-item menu-items">
-            <a className="nav-link" href="#!">
-              <span className="menu-icon">
-                <i
-                  className="fa-solid fa-circle-info"
-                  color={styleColor.warnning}
-                ></i>
-              </span>
-              <span className="menu-title">Giới Thiệu</span>
-            </a>
-          </li>
-          <li className="nav-item menu-items">
+          <li className="nav-item menu-items d-lg-none">
             <a className="nav-link" href="#!">
               <span className="menu-icon">
                 <i
@@ -201,7 +208,7 @@ function Sidebar(props) {
                   color={styleColor.succcess}
                 ></i>
               </span>
-              <span className="menu-title">Liên Hệ</span>
+              <span className="menu-title">Đăng Xuất</span>
             </a>
           </li>
         </ul>

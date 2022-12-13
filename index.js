@@ -9,6 +9,34 @@ require("dotenv").config({
   path: "./configs/.env",
 });
 
+// netsh wlan show interfaces - Get info Wifi With CMD
+
+// const wifi = require("node-wifi");
+
+// wifi.init({
+//   iface: null,
+// });
+
+// wifi.scan((err, networks) => {
+//   if (err) {
+//     console.log(err);
+//   } else {
+//     console.log(networks);
+//     const bssid = ["fc:40:09:a6:3e:40"];
+//     const ssid = ["MADIAD - LIVETRADE "];
+//     networks.map((wifi) => {
+//       // console.log(wifi.ssid);
+//       // console.log(bssid.includes(wifi.bssid));
+//       // console.log(ssid.includes(wifi.ssid));
+//       if (bssid.includes(wifi.bssid) && ssid.includes(wifi.ssid)) {
+//         console.log("Ok");
+//       } else {
+//         console.log("Not Ok");
+//       }
+//     });
+//   }
+// });
+
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());

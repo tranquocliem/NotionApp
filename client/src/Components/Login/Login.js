@@ -1,78 +1,140 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
+import { login } from "../../Service/AccountService";
+import { AuthContext } from "../../Context/AuthContext";
 import "./index.css";
+import { MyAlert } from "../Alert/Alert";
 function Login() {
   const [hidePass, setHidePass] = useState(true);
+  const [userData, setUserData] = useState({ username: "", password: "" });
+
+  const authContext = useContext(AuthContext);
+
+  const [disBtnLogin, setDisBtnLogin] = useState(false);
+
+  const resetForm = () => {
+    setUserData({
+      username: "",
+      password: "",
+    });
+  };
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
   const hidePassword = () => {
     setHidePass(!hidePass);
   };
 
-  useEffect(() => {
-    const getAPI = async () => {
-      const data = await axios.get(
-        "https://notion-app-lac.vercel.app/api/test/getData"
-      );
-      console.log(data);
-    };
-    getAPI();
-  }, []);
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    setDisBtnLogin(true);
+    if (userData.username !== "" && userData.password !== "") {
+      const data = await login(userData);
+      // setDisBtnLogin(true);
+      if (data && data.isAuthenticated) {
+        MyAlert(
+          "succ",
+          `Chúc mừng ${data.user.username} đã đăng nhập thành công`,
+          2500
+        );
+        authContext.setUser(userData);
+        authContext.setIsAuthenticated(data.isAuthenticated);
+        setDisBtnLogin(false);
+        resetForm();
+      } else {
+        MyAlert("err", "Sai Tài Khoản Hoặc Mật Khẩu", 3500);
+        setDisBtnLogin(false);
+      }
+    } else {
+      if (userData.username === "") {
+        MyAlert("war", "Vui Lòng Nhập Username Hoặc Email", 3500);
+      }
+      if (userData.password === "") {
+        MyAlert("war", "Vui Lòng Nhập Password", 3500);
+      }
+    }
+  };
+
   return (
     <>
       <div className="container-scroller">
         <div className="container-fluid page-body-wrapper full-page-wrapper">
-          <div className="row w-100 m-0">
-            <div className="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
-              <div className="card col-lg-4 mx-auto">
-                <div className="card-body px-5 py-5">
-                  <h3 className="card-title text-center mb-5">Đăng Nhập</h3>
-                  <form>
-                    <div className="form-group">
-                      <label>Username hoặc email *</label>
-                      <input
+          {!authContext.isAuthenticated ? (
+            <div className="row w-100 m-0">
+              <div className="content-wrapper full-page-wrapper d-flex align-items-center auth login-bg">
+                <div className="card col-xl-4 mx-auto">
+                  <div className="card-body px-5 py-5">
+                    <h3 className="card-title text-center mb-5">Đăng Nhập</h3>
+                    <form>
+                      <div className="form-group">
+                        <label>Username hoặc email *</label>
+                        {/* <input
                         type="text"
                         className="form-control p_input text-light"
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Mật khẩu *</label>
-                      <div className="d-flex">
+                      /> */}
                         <input
-                          type={hidePass ? "password" : "text"}
+                          type="text"
+                          name="username"
+                          value={userData.username}
+                          onChange={onChangeInput}
                           className="form-control p_input text-light"
+                          spellCheck="false"
                         />
-                        <div className="input-group-append">
-                          <span
-                            onClick={hidePassword}
-                            className="input-group-text"
-                          >
-                            {hidePass ? (
-                              <ion-icon
-                                name="eye-outline"
-                                id="show_eye"
-                              ></ion-icon>
-                            ) : (
-                              <ion-icon
-                                name="eye-off-outline"
-                                id="hide_eye"
-                              ></ion-icon>
-                            )}
-                          </span>
+                      </div>
+                      <div className="form-group">
+                        <label>Mật khẩu *</label>
+                        <div className="d-flex">
+                          <input
+                            type={hidePass ? "password" : "text"}
+                            name="password"
+                            value={userData.password}
+                            onChange={onChangeInput}
+                            className="form-control p_input text-light"
+                          />
+                          <div className="input-group-append">
+                            <span
+                              onClick={hidePassword}
+                              className="input-group-text"
+                            >
+                              {hidePass ? (
+                                <ion-icon
+                                  name="eye-outline"
+                                  id="show_eye"
+                                ></ion-icon>
+                              ) : (
+                                <ion-icon
+                                  name="eye-off-outline"
+                                  id="hide_eye"
+                                ></ion-icon>
+                              )}
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="text-center">
-                      <button
-                        type="submit"
-                        className="btn btn-primary btn-block enter-btn"
-                      >
-                        Đăng Nhập
-                      </button>
-                    </div>
-                  </form>
+                      <div className="text-center">
+                        <button
+                          disabled={disBtnLogin}
+                          type="submit"
+                          className="btn btn-primary btn-block enter-btn"
+                          onClick={onSubmit}
+                        >
+                          {disBtnLogin ? (
+                            <div className="spinner-border" role="status">
+                              <span className="sr-only">Loading...</span>
+                            </div>
+                          ) : (
+                            "Đăng Nhập"
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
     </>
