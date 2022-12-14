@@ -15,7 +15,7 @@ function ListLeaderDepartment() {
                     <tr className="text-left">
                       <th> Mã Số </th>
                       <th> Họ và Tên </th>
-                      <th> Bộ Phần </th>
+                      <th> Bộ Phận </th>
                       <th> Chức Vụ </th>
                       <th> Ngày Bắt Đầu Làm Việc </th>
                       <th> Số Điện Thoại </th>

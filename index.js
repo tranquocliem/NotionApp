@@ -37,6 +37,21 @@ require("dotenv").config({
 //   }
 // });
 
+// const getmac = require("getmac");
+
+// const physicalAddress = "28:39:26:65:25:1f";
+
+// const callMac = () => {
+//   console.log(getmac.default());
+//   if (getmac.default() === physicalAddress) {
+//     console.log("Bằng");
+//   } else {
+//     console.log("Ko Bằng");
+//   }
+// };
+
+// callMac();
+
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());

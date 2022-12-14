@@ -41,7 +41,7 @@ function AllMembers() {
                     <thead>
                       <tr className="text-left">
                         <th> Họ và Tên </th>
-                        <th> Bộ Phần </th>
+                        <th> Bộ Phận </th>
                         <th> Chức Vụ </th>
                         <th> E-mail </th>
                         <th> Số Điện Thoại </th>

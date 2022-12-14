@@ -1,5 +1,9 @@
+import { useContext } from "react";
+import { AuthContext } from "../../Context/AuthContext";
+
 function DataMembers(props) {
   const member = props.member;
+  const { user } = useContext(AuthContext);
 
   return (
     <>
@@ -26,6 +30,11 @@ function DataMembers(props) {
             <div className="badge badge-outline-success">Nghỉ Việc</div>
           )}
         </td>
+        {user.role && user.role === "spadmin" && member.role !== "spadmin" ? (
+          <td>
+            <button className="btn btn-danger">Xóa</button>
+          </td>
+        ) : null}
       </tr>
     </>
   );

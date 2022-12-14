@@ -589,14 +589,12 @@ accRouter.patch(
     const { id } = req.user;
 
     try {
-      const user = await Account.findById({ _id: id });
+      let user = await Account.findById({ _id: id });
       if (user) {
         if (password !== configPassword) {
-          return res.status(400).json({
-            message: {
-              msgBody: "Mật khẩu xác nhận không đúng",
-              msgError: true,
-            },
+          return res.status(203).json({
+            message: "Mật khẩu xác nhận không đúng",
+            status: false,
           });
         }
         bcrypt.compare(
@@ -604,21 +602,17 @@ accRouter.patch(
           req.user.password,
           function (err, isMatch) {
             if (err) {
-              res.status(400).json({
-                message: {
-                  msgBody: "Có Lỗi!!!",
-                  msgError: true,
-                },
+              res.status(203).json({
+                message: "Có Lỗi!!!",
                 err,
+                status: false,
               });
             }
             if (!isMatch) {
-              res.status(400).json({
+              res.status(203).json({
                 isMatch: isMatch,
-                message: {
-                  msgBody: "Mật khẩu cũ không đúng",
-                  msgError: true,
-                },
+                message: "Mật khẩu cũ không đúng",
+                status: false,
               });
             } else {
               const updatePassword = {
@@ -627,19 +621,14 @@ accRouter.patch(
               user = lodash.extend(user, updatePassword);
               user.save((err, result) => {
                 if (err) {
-                  return res.status(500).json({
-                    message: {
-                      msgBody: "Lỗi thêm không thành công",
-                      msgError: true,
-                    },
+                  return res.status(203).json({
+                    message: "Lỗi thêm không thành công",
+                    status: false,
                     err,
                   });
                 }
                 res.status(200).json({
-                  message: {
-                    msgBody: "Thay Đổi Mật Khẩu Thành Công",
-                    msgError: false,
-                  },
+                  message: "Thay Đổi Mật Khẩu Thành Công",
                   status: true,
                 });
               });

@@ -86,13 +86,13 @@ function Navbar(props) {
                     </p>
                   </div>
                 </Link>
-                <div className="dropdown-divider"></div>
+                {/* <div className="dropdown-divider"></div>
                 <p
                   className="p-3 mb-0 text-center"
                   style={{ cursor: "pointer" }}
                 >
                   Xem Tất Cả Ghi Chú
-                </p>
+                </p> */}
               </div>
             </li>
           </>
@@ -297,7 +297,7 @@ function Navbar(props) {
               >
                 <h6 className="p-3 mb-0">Thông Tin</h6>
                 <div className="dropdown-divider"></div>
-                <a className="dropdown-item preview-item" href="#!">
+                {/* <a className="dropdown-item preview-item" href="#!">
                   <div className="preview-thumbnail">
                     <div className="preview-icon bg-dark rounded-circle">
                       <i
@@ -309,7 +309,7 @@ function Navbar(props) {
                   <div className="preview-item-content">
                     <p className="preview-subject mb-1">Cài Đặt</p>
                   </div>
-                </a>
+                </a> */}
                 <div className="dropdown-divider"></div>
                 <Link
                   className="dropdown-item preview-item"
@@ -328,13 +328,13 @@ function Navbar(props) {
                     <p className="preview-subject mb-1">Đăng Xuất</p>
                   </div>
                 </Link>
-                <div className="dropdown-divider"></div>
+                {/* <div className="dropdown-divider"></div>
                 <p
                   className="p-3 mb-0 text-center"
                   style={{ cursor: "pointer" }}
                 >
                   Cài Đặt Nâng Cao
-                </p>
+                </p> */}
               </div>
             </li>
           </ul>

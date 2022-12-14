@@ -10,6 +10,7 @@ import AddUser from "../AddUser/AddUser";
 import AddDepartment from "../AddDepartment/AddDepartment";
 import ListDepartment from "../ListDepartment/ListDepartment";
 import AllMembers from "../AllMembers/AllMembers";
+import ChangePass from "../ChangPass/ChangePass";
 function DuongDanURL() {
   return (
     <>
@@ -50,6 +51,11 @@ function DuongDanURL() {
           path="/them-bo-phan"
           roles={["spadmin", "admin"]}
           component={AddDepartment}
+        />
+        <PrivateRouter
+          path="/doi-mat-khau/:username"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={ChangePass}
         />
 
         {/* <Route path="*" component={NotFound} /> */}

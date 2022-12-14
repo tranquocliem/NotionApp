@@ -9,6 +9,31 @@
     cursor: pointer;
 }
 
+.avatar_main {
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    border-radius: 50%;
+    position: relative;
+    margin: 15px auto;
+    border: 5px double #ddd;
+    cursor: pointer;
+}
+
+@media (max-width:333px) {
+    .avatar_main {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+.avatar_main img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+}
+
 .info-avatar img {
     width: 100%;
     height: 100%;

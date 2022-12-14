@@ -123,6 +123,12 @@ export const destroyAvatar = () => {
     });
 };
 
+export const changePass = (variable) => {
+  return axios.patch("/api/account/changePass", variable).then((res) => {
+    return res.data;
+  });
+};
+
 export const isAuthenticated = () => {
   return fetch("/api/account/authenticated").then((res) => {
     if (res.status !== 401) return res.json().then((data) => data);

@@ -52,12 +52,8 @@ function MyAccount() {
                   </div>
 
                   <div className="row d-flex justify-content-center mb-3">
-                    <div className="col-md-3">
-                      <img
-                        src={account.avatar}
-                        alt="avartar"
-                        className="img-thumbnail rounded-circle"
-                      />
+                    <div className="avatar_main">
+                      <img src={account.avatar} alt="avartar" />
                     </div>
                   </div>
                   <div className="dropdown-divider"></div>
