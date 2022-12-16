@@ -1,33 +1,31 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../Context/AuthContext";
-import { getMyAccount, isAuthenticated } from "../../Service/AccountService";
-import EditAccount from "./EditAccount";
-import "./index.css";
 import moment from "moment";
-import "moment/locale/vi";
+import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
+import { getAccountById } from "../../Service/AccountService";
+import EditDetailsAccount from "./EditDetailsAccount";
 
-function MyAccount() {
+function DetailsAccount() {
   const [account, setAccount] = useState();
+  const { user } = useContext(AuthContext);
   const [onModal, setOnModal] = useState(false);
-  const { setUser } = useContext(AuthContext);
 
   const offModal = () => {
     setOnModal(false);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const id = useParams().id;
+
   useEffect(() => {
-    getMyAccount().then((data) => {
+    getAccountById(id).then((data) => {
       setAccount(data.dataUser);
     });
-  }, []);
+  }, [id]);
 
   const updateProfile = () => {
-    getMyAccount().then((data) => {
+    getAccountById(id).then((data) => {
       setAccount(data.dataUser);
-      isAuthenticated().then((data) => {
-        setUser(data.user);
-      });
     });
   };
 
@@ -47,14 +45,16 @@ function MyAccount() {
                     <div className="col-6 text-left">
                       <h3>Thông tin tài khoản</h3>
                     </div>
-                    <div className="col-6 text-right">
-                      <button
-                        className="btn btn-sm btn-primary text-right"
-                        onClick={() => setOnModal(true)}
-                      >
-                        <i className="fa-solid fa-gear"></i>
-                      </button>
-                    </div>
+                    {user.role === "spadmin" || user.role === "admin" ? (
+                      <div className="col-6 text-right">
+                        <button
+                          className="btn btn-sm btn-primary text-right"
+                          onClick={() => setOnModal(true)}
+                        >
+                          <i className="fa-solid fa-gear"></i>
+                        </button>
+                      </div>
+                    ) : null}
                   </div>
 
                   <div className="row d-flex justify-content-center mb-3">
@@ -218,10 +218,12 @@ function MyAccount() {
               </div>
             </div>
           </div>
-          <EditAccount
+          <EditDetailsAccount
             account={account}
             onModal={onModal}
             offModal={offModal}
+            idUser={id}
+            user={user}
             updateProfile={updateProfile}
           />
         </>
@@ -239,4 +241,4 @@ function MyAccount() {
   );
 }
 
-export default MyAccount;
+export default DetailsAccount;

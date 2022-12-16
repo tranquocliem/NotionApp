@@ -58,6 +58,49 @@ const AccountSchema = new mongoose.Schema(
       required: true,
       default: true,
     },
+    manv: {
+      type: String,
+      default: "",
+      unique: true,
+      required: true,
+    },
+    birthday: {
+      type: Date,
+      default: "",
+    },
+    address1: {
+      type: String,
+      default: "",
+    },
+    address2: {
+      type: String,
+      default: "",
+    },
+    cccd: {
+      type: String,
+      default: "",
+    },
+    nationality: {
+      type: String,
+      default: "",
+    },
+    ethnic: {
+      type: String,
+      default: "",
+    },
+    contract: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contract",
+      default: null,
+    },
+    bankaddress: {
+      type: String,
+      default: "",
+    },
+    note: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

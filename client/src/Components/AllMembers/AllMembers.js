@@ -5,6 +5,7 @@ import DataMembers from "./DataMembers";
 function AllMembers() {
   const [members, setMembers] = useState();
   const [pending, setPending] = useState(false);
+
   useEffect(() => {
     const getAPI = async () => {
       const data = await getAllAccount();
@@ -15,6 +16,18 @@ function AllMembers() {
     };
     getAPI();
   }, []);
+
+  const reloadTableData = () => {
+    const getAPI = async () => {
+      const data = await getAllAccount();
+      if (data.status) {
+        setPending(false);
+        setMembers(data.dataUser);
+      }
+    };
+    getAPI();
+  };
+
   return (
     <>
       {!members ? (
@@ -50,7 +63,13 @@ function AllMembers() {
                     </thead>
                     <tbody>
                       {members.map((data, i) => {
-                        return <DataMembers member={data} key={i} />;
+                        return (
+                          <DataMembers
+                            reloadTableData={reloadTableData}
+                            member={data}
+                            key={i}
+                          />
+                        );
                       })}
                     </tbody>
                   </table>

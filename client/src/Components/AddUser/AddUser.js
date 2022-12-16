@@ -11,6 +11,7 @@ function AddUser() {
 
   const [dataInput, setDataInput] = useState({
     username: "",
+    manv: "",
     email: "",
     role: "",
     position: "",
@@ -32,16 +33,20 @@ function AddUser() {
     setPending(true);
     const variable = {
       username: dataInput.username,
+      manv: dataInput.manv,
       email: dataInput.email,
       role: dataInput.role,
-      department: departments.value,
+      department: departments.value ? departments.value : null,
       position: dataInput.position,
       sdt: dataInput.sdt,
       password: dataInput.password,
       confirmPassword: dataInput.confirmPassword,
     };
+    console.log(variable);
     if (
       dataInput.username &&
+      dataInput.manv &&
+      dataInput.email &&
       dataInput.role &&
       dataInput.password &&
       dataInput.confirmPassword &&
@@ -69,6 +74,8 @@ function AddUser() {
     }
     if (
       !dataInput.username ||
+      !dataInput.manv ||
+      !dataInput.email ||
       !dataInput.role ||
       !dataInput.password ||
       !dataInput.confirmPassword
@@ -112,7 +119,19 @@ function AddUser() {
                   />
                 </div>
                 <div className="form-group text-left my-4">
-                  <label htmlFor="exampleInputEmail1">E-mail</label>
+                  <label htmlFor="exampleInputMANV">Mã Nhân Viên (*)</label>
+                  <input
+                    name="manv"
+                    type="text"
+                    className="form-control text-light"
+                    id="exampleInputMANV"
+                    placeholder="Mã Nhân Viên"
+                    value={dataInput.manv}
+                    onChange={onChange}
+                  />
+                </div>
+                <div className="form-group text-left my-4">
+                  <label htmlFor="exampleInputEmail1">E-mail (*)</label>
                   <input
                     name="email"
                     type="email"

@@ -22,31 +22,55 @@ cloudinary.config({
 });
 
 //add account
+// accRouter.post("/addAccountTest", async (req, res) => {
+//   const newAccount = new Account(req.body);
+//   try {
+//     const data = await newAccount.save(newAccount);
+//     if (data) {
+//       return res.status(200).json({
+//         message: "Tạo Tài Khoản Thành Công",
+//         status: true,
+//       });
+//     }
+//     return res.status(203).json({
+//       message: "Tạo Tài Khoản Không Thành Công",
+//       status: false,
+//     });
+//   } catch (error) {
+//     if (error.code === 11000) {
+//       return res.status(203).json({
+//         message: "Username hoặc email đã tồn tại",
+//         status: false,
+//         error,
+//       });
+//     }
+//     return res.status(500).json(error);
+//   }
+// });
+
+//add account
 accRouter.post(
   "/addAccount",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { email, username, password, role, department, position } = req.body;
+    const { email, username, manv, password, role, department, position } =
+      req.body;
     const roleAcc = req.user.role;
     if (roleAcc === "spadmin") {
       try {
         const checkAccount = await Account.findOne({
-          $or: [{ username, email }],
+          $or: [{ username, email, manv }],
         });
-        if (checkAccount) {
+        const checkMANVAccount = await Account.findOne({
+          manv,
+        });
+        if (checkAccount && checkMANVAccount) {
           return res.status(201).json({
-            message: "Username hoặc email đã tồn tại",
+            message: "Username, email hoặc mã nhân viên đã tồn tại",
             status: false,
           });
         } else {
-          const newAccount = new Account({
-            email,
-            username,
-            password,
-            role,
-            department,
-            position,
-          });
+          const newAccount = new Account(req.body);
           try {
             const data = await newAccount.save(newAccount);
             if (data) {
@@ -67,7 +91,7 @@ accRouter.post(
           } catch (error) {
             if (error.code === 11000) {
               return res.status(203).json({
-                message: "Username hoặc email đã tồn tại",
+                message: "Username, email hoặc mã nhân viên đã tồn tại",
                 status: false,
                 error,
               });
@@ -92,24 +116,26 @@ accRouter.post(
   "/addAccountByAdmin",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { email, username, password, role, department, position } = req.body;
+    const { email, username, manv, password, role, department, position } =
+      req.body;
     const roleAcc = req.user.role;
 
     if (roleAcc === "admin") {
       if (role !== "spadmin" && role !== "admin") {
         try {
           const checkAccount = await Account.findOne({
-            $or: [{ username, email }],
+            $or: [{ username, email, manv }],
           });
           if (checkAccount) {
             return res.status(201).json({
-              message: "Username hoặc email đã tồn tại",
+              message: "Username, email, mã nhân viên đã tồn tại",
               status: false,
             });
           } else {
             const newAccount = new Account({
               email,
               username,
+              manv,
               password,
               role,
               department,
@@ -194,6 +220,26 @@ accRouter.get(
   }
 );
 
+//get account by id
+accRouter.get(
+  "/getAccountById/:id",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const { id } = req.params;
+    try {
+      const dataUser = await Account.findById(
+        { _id: id },
+        { password: 0 }
+      ).populate({
+        path: "department",
+      });
+      return res.status(200).json({ dataUser, status: true });
+    } catch (error) {
+      return res.status(500).json(error);
+    }
+  }
+);
+
 //get account by admin
 accRouter.get(
   "/getAccountByAdmin",
@@ -226,12 +272,31 @@ accRouter.patch(
   "/updateAccount",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { fullname, sdt, walletonus, avatar } = req.body;
+    const {
+      fullname,
+      sdt,
+      walletonus,
+      avatar,
+      birthday,
+      address1,
+      address2,
+      cccd,
+      nationality,
+      ethnic,
+      bankaddress,
+    } = req.body;
     const update = {
       fullname,
       sdt,
       walletonus,
       avatar,
+      birthday,
+      address1,
+      address2,
+      cccd,
+      nationality,
+      ethnic,
+      bankaddress,
     };
     const updateSPAdmin = req.body;
     const { id, role } = req.user;
@@ -378,6 +443,12 @@ accRouter.patch(
                 { $push: { users: id } }
               );
             }
+          }
+          if (updates.department && !oldDepartment) {
+            await Department.findOneAndUpdate(
+              { _id: updates.department },
+              { $push: { users: id } }
+            );
           }
           return res.status(200).json({
             message: "Cập Nhật Thông Tin Thành Công",

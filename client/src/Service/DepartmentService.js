@@ -27,3 +27,20 @@ export const addDepartment = (variable) => {
       };
     });
 };
+
+export const deleteDepartment = (id) => {
+  return axios
+    .delete(`/api/department/deleteDepartment/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Xóa bộ phận không thành công",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};

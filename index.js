@@ -22,18 +22,22 @@ require("dotenv").config({
 //     console.log(err);
 //   } else {
 //     console.log(networks);
-//     const bssid = ["fc:40:09:a6:3e:40"];
 //     const ssid = ["MADIAD - LIVETRADE "];
 //     networks.map((wifi) => {
-//       // console.log(wifi.ssid);
-//       // console.log(bssid.includes(wifi.bssid));
-//       // console.log(ssid.includes(wifi.ssid));
-//       if (bssid.includes(wifi.bssid) && ssid.includes(wifi.ssid)) {
+//       if (ssid.includes(wifi.ssid)) {
 //         console.log("Ok");
 //       } else {
 //         console.log("Not Ok");
 //       }
 //     });
+//   }
+// });
+
+// wifi.getCurrentConnections((error, currentConnections) => {
+//   if (error) {
+//     console.log(error);
+//   } else {
+//     console.log(currentConnections);
 //   }
 // });
 
@@ -51,6 +55,40 @@ require("dotenv").config({
 // };
 
 // callMac();
+
+// const address = require("address");
+// // default interface 'eth' on linux, 'en' on osx.
+// address.ip();
+// address.ipv6();
+// address.mac(function (err, addr) {
+//   console.log(addr);
+// });
+
+// var network = require("network");
+
+// network.get_public_ip(function (err, ip) {
+//   console.log(err || ip); // should return your public IP address
+// });
+// network.get_private_ip(function (err, ip) {
+//   console.log(err || ip); // err may be 'No active network interface found'.
+// });
+// network.get_gateway_ip(function (err, ip) {
+//   console.log(err || ip); // err may be 'No active network interface found.'
+// });
+
+// network.get_active_interface(function (err, obj) {
+//   console.log(obj);
+// });
+
+// const getIP = require("external-ip")();
+
+// getIP((err, ip) => {
+//   if (err) {
+//     // every service in the list has failed
+//     throw err;
+//   }
+//   console.log(ip);
+// });
 
 app.use(cors());
 app.use(cookieParser());

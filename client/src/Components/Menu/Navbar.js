@@ -86,6 +86,22 @@ function Navbar(props) {
                     </p>
                   </div>
                 </Link>
+                <div className="dropdown-divider"></div>
+                <Link to="/them-bo-phan" className="dropdown-item preview-item">
+                  <div className="preview-thumbnail">
+                    <div className="preview-icon bg-dark rounded-circle">
+                      <i
+                        className="fa-solid fa-tablet"
+                        color={styleColor.warnning}
+                      ></i>
+                    </div>
+                  </div>
+                  <div className="preview-item-content">
+                    <p className="preview-subject ellipsis mb-1">
+                      Tạo một hợp đồng
+                    </p>
+                  </div>
+                </Link>
                 {/* <div className="dropdown-divider"></div>
                 <p
                   className="p-3 mb-0 text-center"

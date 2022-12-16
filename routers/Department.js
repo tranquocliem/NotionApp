@@ -139,7 +139,7 @@ departmentRouter.delete(
   async (req, res) => {
     const { id } = req.params;
     const { role } = req.user;
-    if ((role === "spadmin", role === "admin")) {
+    if (role === "spadmin" || role === "admin") {
       try {
         const data = await Department.findOneAndDelete({
           _id: id,

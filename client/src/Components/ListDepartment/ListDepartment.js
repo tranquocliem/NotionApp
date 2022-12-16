@@ -15,6 +15,16 @@ function ListDepartment() {
     getAPI();
   }, []);
 
+  const reloadDepartment = () => {
+    async function getAPI() {
+      const data = await getDepartment();
+      if (data) {
+        setListDepartment(data);
+      }
+    }
+    getAPI();
+  };
+
   return (
     <>
       {listDepartment.length > 0 ? (
@@ -46,7 +56,13 @@ function ListDepartment() {
                     </thead>
                     <tbody>
                       {listDepartment.map((data, i) => {
-                        return <DataListDepartment department={data} key={i} />;
+                        return (
+                          <DataListDepartment
+                            reloadDepartment={reloadDepartment}
+                            department={data}
+                            key={i}
+                          />
+                        );
                       })}
                     </tbody>
                   </table>

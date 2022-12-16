@@ -1,0 +1,30 @@
+.emojimouse {
+    position: fixed;
+    pointer-events: none;
+    animation: animateMouse 1s linear infinite;
+}
+
+@keyframes animateMouse {
+    0% {
+        translate: 0 0;
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    30% {
+        translate: 0 100px;
+        opacity: 1;
+    }
+
+    90% {
+        opacity: 1;
+    }
+
+    100% {
+        translate: 0 80px;
+        opacity: 0;
+    }
+}

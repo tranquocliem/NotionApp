@@ -78,6 +78,17 @@ export const getAllAccount = async () => {
     });
 };
 
+export const getAccountById = async (id) => {
+  return axios
+    .get(`/api/account/getAccountById/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .then((data) => {
+      return data;
+    });
+};
+
 export const getMyAccount = async () => {
   return axios
     .get("/api/account/getMyAccount")
@@ -99,6 +110,57 @@ export const updateAccount = (variable) => {
       return {
         message: {
           msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
+export const updateAccountBySpadmin = (id, variable) => {
+  return axios
+    .patch(`/api/account/updateAccountBySpAdmin/${id}`, variable)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
+export const updateAccountByAdmin = (id, variable) => {
+  return axios
+    .patch(`/api/account/updateAccountByAdmin/${id}`, variable)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Cập nhật không thành công",
+          msgError: true,
+        },
+        err,
+      };
+    });
+};
+
+export const deleteAccount = (id) => {
+  return axios
+    .delete(`/api/account/deleteAccount/${id}`)
+    .then((res) => {
+      return res.data;
+    })
+    .catch((err) => {
+      return {
+        message: {
+          msgBody: "Xóa tài khoản không thành công",
           msgError: true,
         },
         err,

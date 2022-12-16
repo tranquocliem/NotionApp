@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { destroyAvatar, updateAccount } from "../../Service/AccountService";
 import { checkImage, uploadImage } from "../../Shared/HandleImage";
 import { MyAlert } from "../Alert/Alert";
+import DatePicker, { registerLocale } from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import vi from "date-fns/locale/vi";
+registerLocale("vi", vi);
 
 function EditAccount(props) {
   const account = props.account;
@@ -10,28 +14,53 @@ function EditAccount(props) {
     fullname: "",
     email: "",
     sdt: "",
+    cccd: "",
+    nationality: "",
+    address1: "",
+    address2: "",
+    bankaddress: "",
+    ethnic: "",
     walletonus: "",
   });
+
+  const [birthday, setBirthday] = useState(new Date("01/01/2000"));
 
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
     setUserData({
       fullname: account.fullname,
+      birthday: account.birthday,
       email: account.email,
       sdt: account.sdt,
+      cccd: account.cccd,
+      nationality: account.nationality,
+      address1: account.address1,
+      address2: account.address2,
+      bankaddress: account.bankaddress,
+      ethnic: account.ethnic,
       walletonus: account.walletonus,
     });
+    setBirthday(new Date(account.birthday ? account.birthday : birthday));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
   const offModal = () => {
     props.offModal();
     setUserData({
       fullname: account.fullname,
+      birthday: account.birthday,
       email: account.email,
       sdt: account.sdt,
+      cccd: account.cccd,
+      nationality: account.nationality,
+      address1: account.address1,
+      address2: account.address2,
+      bankaddress: account.bankaddress,
+      ethnic: account.ethnic,
       walletonus: account.walletonus,
     });
+    setBirthday(new Date(account.birthday ? account.birthday : birthday));
     setAvatar("");
     setPending(false);
   };
@@ -50,6 +79,10 @@ function EditAccount(props) {
     setUserData({ ...userData, [name]: value });
   };
 
+  const onChangeDate = (date) => {
+    setBirthday(date);
+  };
+
   const updateProfile = async () => {
     try {
       let media;
@@ -60,8 +93,15 @@ function EditAccount(props) {
       }
       const variable = {
         fullname: userData.fullname,
+        birthday: birthday,
         email: userData.email,
         sdt: userData.sdt,
+        cccd: userData.cccd,
+        nationality: userData.nationality,
+        address1: userData.address1,
+        address2: userData.address2,
+        bankaddress: userData.bankaddress,
+        ethnic: userData.ethnic,
         walletonus: userData.walletonus,
         avatar: avatar ? media[0].url : account.avatar,
       };
@@ -156,6 +196,32 @@ function EditAccount(props) {
                   <div className="mb-3 text-left">
                     <div className="form-group">
                       <div className="position-relative">
+                        <label className="text-secondary" htmlFor="inputemail">
+                          Ngày sinh
+                        </label>
+                        <br />
+                        <DatePicker
+                          name="birthday"
+                          className="form-control"
+                          selected={birthday}
+                          value={birthday}
+                          dateFormat="dd/MM/yyyy"
+                          disabledKeyboardNavigation
+                          placeholderText="Ngày Sinh"
+                          onChange={onChangeDate}
+                          locale="vi"
+                          minDate={new Date("01/01/1970")}
+                          maxDate={new Date()}
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
                         <label htmlFor="email">E-mail</label>
                         <input
                           type="text"
@@ -180,13 +246,157 @@ function EditAccount(props) {
                   <div className="mb-3 text-left">
                     <div className="form-group">
                       <div className="position-relative">
-                        <label htmlFor="sdt">Số Điện Thoại</label>
+                        <label htmlFor="sdt">Số điện thoại</label>
                         <input
                           type="text"
                           className="form-control"
                           id="sdt"
                           name="sdt"
                           value={userData.sdt}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="cccd">CMND/CCCD</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="cccd"
+                          name="cccd"
+                          value={userData.cccd}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="cccd">Quốc tịch</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="nationality"
+                          name="nationality"
+                          value={userData.nationality}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="cccd">Dân tộc</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="ethnic"
+                          name="ethnic"
+                          value={userData.ethnic}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="cccd">Địa chỉ thường trú</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="ethnic"
+                          name="ethnic"
+                          value={userData.address1}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="cccd">Địa chỉ tạm trú</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="ethnic"
+                          name="ethnic"
+                          value={userData.address2}
+                          onChange={onChange}
+                          spellCheck="false"
+                        />
+                        <small
+                          style={{
+                            top: "72%",
+                            right: "5px",
+                            transform: "translateY(-50%)",
+                          }}
+                          className="text-danger position-absolute"
+                        ></small>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-3 text-left">
+                    <div className="form-group">
+                      <div className="position-relative">
+                        <label htmlFor="sdt">TK ngân hàng</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          id="walletonus"
+                          name="walletonus"
+                          value={userData.walletonus}
                           onChange={onChange}
                           spellCheck="false"
                         />
