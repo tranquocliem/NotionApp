@@ -4,6 +4,7 @@ const CheckIn = require("../models/CheckIn");
 const checkInRouter = express.Router();
 const wifi = require("node-wifi");
 const Wifi = require("../models/Wifi");
+const Devices = require("../models/Devices");
 const address = require("address");
 
 wifi.init({
@@ -33,9 +34,28 @@ checkInRouter.post(
     });
 
     try {
-      const data = await newCheckIn.save(newCheckIn);
+      // const data = await newCheckIn.save(newCheckIn);
       const dataWifi = await Wifi.find();
       const wifiCurrent = await wifi.getCurrentConnections();
+      const myMac = await Devices.findOne({ writer: id });
+      const macCurrent = getmac();
+
+      if (
+        dataWifi[0].ssid === wifiCurrent[0].ssid &&
+        myMac.mac === macCurrent
+      ) {
+        return res.status(200).json({
+          message: "Check In Thành Công",
+          status: true,
+        });
+      }
+
+      if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
+        return res.status(200).json({
+          message: "Check In Thành Công Tại Nhà (WFH)",
+          status: true,
+        });
+      }
       // if (data) {
       //   return res.status(200).json({
       //     message: "Tạo Bộ Phân Thành Công",
@@ -45,6 +65,7 @@ checkInRouter.post(
       // return res
       //   .status(200)
       //   .json({ message: "Tạo Bộ Phận Không Thành Công", status: false });
+      console.log(dataWifi[0].ssid, wifiCurrent[0].ssid, myMac.mac, macCurrent);
     } catch (error) {
       return res.status(500).json(error);
     }

@@ -346,8 +346,8 @@ function EditAccount(props) {
                         <input
                           type="text"
                           className="form-control"
-                          id="ethnic"
-                          name="ethnic"
+                          id="address1"
+                          name="address1"
                           value={userData.address1}
                           onChange={onChange}
                           spellCheck="false"
@@ -370,8 +370,8 @@ function EditAccount(props) {
                         <input
                           type="text"
                           className="form-control"
-                          id="ethnic"
-                          name="ethnic"
+                          id="address2"
+                          name="address2"
                           value={userData.address2}
                           onChange={onChange}
                           spellCheck="false"
@@ -394,9 +394,9 @@ function EditAccount(props) {
                         <input
                           type="text"
                           className="form-control"
-                          id="walletonus"
-                          name="walletonus"
-                          value={userData.walletonus}
+                          id="bankaddress"
+                          name="bankaddress"
+                          value={userData.bankaddress}
                           onChange={onChange}
                           spellCheck="false"
                         />
