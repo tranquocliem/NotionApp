@@ -55,7 +55,7 @@ function EditDetailsAccount(props) {
     setDepartments(account.department ? account.department.name : departments);
     setPosition(account.position ? account.position : position);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, []);
 
   const offModal = () => {
     props.offModal();

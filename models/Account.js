@@ -101,6 +101,11 @@ const AccountSchema = new mongoose.Schema(
       type: String,
       default: "",
     },
+    statusMac: {
+      type: Boolean,
+      required: true,
+      default: true,
+    },
   },
   { timestamps: true }
 );

@@ -50,9 +50,11 @@ function Login() {
     } else {
       if (userData.username === "") {
         MyAlert("war", "Vui Lòng Nhập Username Hoặc Email", 3500);
+        setDisBtnLogin(false);
       }
       if (userData.password === "") {
         MyAlert("war", "Vui Lòng Nhập Password", 3500);
+        setDisBtnLogin(false);
       }
     }
   };

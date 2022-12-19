@@ -267,6 +267,36 @@ accRouter.get(
   }
 );
 
+//update all account by spadmin
+accRouter.patch(
+  "/updateAllAccount",
+  passport.authenticate("jwt", { session: false }),
+  async (req, res) => {
+    const updateSPAdmin = req.body;
+
+    const { role } = req.user;
+    if (role === "spadmin") {
+      console.log(updateSPAdmin);
+      try {
+        const user = await Account.updateMany({}, { $set: { updateSPAdmin } });
+        if (user) {
+          return res.status(200).json({
+            message: "Cập Nhật Thông Tin Thành Công",
+            status: true,
+          });
+        }
+      } catch (error) {
+        return res.status(500).json(error);
+      }
+    } else {
+      return res.status(203).json({
+        message: "Không phận sự, vui lòng đi chỗ khác dùm!!!",
+        status: false,
+      });
+    }
+  }
+);
+
 // update my account
 accRouter.patch(
   "/updateAccount",

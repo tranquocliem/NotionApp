@@ -9,6 +9,6 @@ Version V1.1.0
 
 Version V1.1.1
 - Đã fix lỗi input nhập dữ liệu trong phần chi tiết tài khoản
-- Đã fix hiển thị trỉnh sửa phần thông tin theo spadmin và admin
+- Đã fix hiển thị trỉnh sửa phần thông tin cá nhân theo spadmin và admin
 - Đã fix lại logic hiển thị nút xóa bộ phận (chỉ spadmin và admin)
 - Thay đổi lại trang login trở nên ngầu hơn, với hiệu ứng ô vuông kèm đèn led chạy từ trên xuống
