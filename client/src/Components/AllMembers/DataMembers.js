@@ -81,7 +81,9 @@ function DataMembers(props) {
               src={member.avatar}
               alt=""
             />
-            <span className="pl-2">{member.fullname}</span>
+            <span className="pl-2">
+              {member.fullname ? member.fullname : "Không Xác Định"}
+            </span>
           </Link>
         </td>
         <td>

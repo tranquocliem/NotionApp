@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DataListDepartment from "./DataListDepartment";
 import { getDepartment } from "../../Service/DepartmentService";
+import { AuthContext } from "../../Context/AuthContext";
 
 function ListDepartment() {
   const [listDepartment, setListDepartment] = useState([]);
+  const { user } = useContext(AuthContext);
   const [search, setSearch] = useState("");
   useEffect(() => {
     async function getAPI() {
@@ -51,7 +53,10 @@ function ListDepartment() {
                         <th className="text-center"> Tên bộ phận </th>
                         <th className="text-center"> Nhân sự </th>
                         <th className="text-center"> Người tạo </th>
-                        <th className="text-center"> Hành động </th>
+                        {(user && user.role === "spadmin") ||
+                        (user && user.role === "spadmin") ? (
+                          <th className="text-center"> Hành động </th>
+                        ) : null}
                       </tr>
                     </thead>
                     <tbody>
@@ -60,6 +65,7 @@ function ListDepartment() {
                           <DataListDepartment
                             reloadDepartment={reloadDepartment}
                             department={data}
+                            user={user}
                             key={i}
                           />
                         );

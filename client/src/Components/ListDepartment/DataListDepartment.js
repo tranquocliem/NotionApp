@@ -6,6 +6,7 @@ import { MyAlert } from "../Alert/Alert";
 function DataListDepartment(props) {
   const department = props.department;
   const [pendding, setPendding] = useState(false);
+
   const deleteAccout = () => {
     immediateToast("question", {
       message: `Bạn có muốn xóa tài khoản ${department.name}`,
@@ -84,11 +85,14 @@ function DataListDepartment(props) {
               : ""}
           </span>
         </td>
-        <td className="text-center">
-          <button onClick={deleteAccout} className="btn btn-danger">
-            Xóa
-          </button>
-        </td>
+        {(props.user && props.user.role === "spadmin") ||
+        (props.user && props.user.role === "spadmin") ? (
+          <td className="text-center">
+            <button onClick={deleteAccout} className="btn btn-danger">
+              Xóa
+            </button>
+          </td>
+        ) : null}
       </tr>
     </>
   );

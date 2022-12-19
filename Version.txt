@@ -1,0 +1,14 @@
+Version V1.1.0
+- Thêm hiệu ứng bông tuyết mùa đông giữa trời đông
+- Thêm dữ liệu vào nhân sự (ngày sinh, CCCD, địa chỉ, ......)
+- Có thể xem chi tiết nhân sự trong mục Tất Cả Nhân Viên (bấm vào tên hoặc avatar để xem)
+- Cập nhật lại form thêm tài khoản
+- Thêm chức năng cập nhật lại thông tin nhân viên (đã phân quyền: spadmin toàn quyền, admin chỉ cập nhật được bộ phận và chức vụ)
+- Thêm chức năng xóa tài khoản (chỉ dành cho spadmin)
+- Thêm chức năng xóa bộ phận (chỉ dành cho spadmin và admin)
+
+Version V1.1.1
+- Đã fix lỗi input nhập dữ liệu trong phần chi tiết tài khoản
+- Đã fix hiển thị trỉnh sửa phần thông tin theo spadmin và admin
+- Đã fix lại logic hiển thị nút xóa bộ phận (chỉ spadmin và admin)
+- Thay đổi lại trang login trở nên ngầu hơn, với hiệu ứng ô vuông kèm đèn led chạy từ trên xuống

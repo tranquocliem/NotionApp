@@ -21,7 +21,7 @@ function DetailsAccount() {
     getAccountById(id).then((data) => {
       setAccount(data.dataUser);
     });
-  }, [id]);
+  }, [id, account]);
 
   const updateProfile = () => {
     getAccountById(id).then((data) => {
@@ -45,7 +45,10 @@ function DetailsAccount() {
                     <div className="col-6 text-left">
                       <h3>Thông tin tài khoản</h3>
                     </div>
-                    {user.role === "spadmin" || user.role === "admin" ? (
+                    {(user.role === "spadmin" && account.role !== "spadmin") ||
+                    (user.role === "admin" &&
+                      account.role !== "spadmin" &&
+                      account.role !== "admin") ? (
                       <div className="col-6 text-right">
                         <button
                           className="btn btn-sm btn-primary text-right"

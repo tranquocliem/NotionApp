@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../Context/AuthContext";
 import { getAllAccount } from "../../Service/AccountService";
 import DataMembers from "./DataMembers";
 
 function AllMembers() {
   const [members, setMembers] = useState();
+  const { user } = useContext(AuthContext);
   const [pending, setPending] = useState(false);
 
   useEffect(() => {
@@ -63,13 +65,17 @@ function AllMembers() {
                     </thead>
                     <tbody>
                       {members.map((data, i) => {
-                        return (
-                          <DataMembers
-                            reloadTableData={reloadTableData}
-                            member={data}
-                            key={i}
-                          />
-                        );
+                        if (data && data.username !== user.username) {
+                          return (
+                            <DataMembers
+                              reloadTableData={reloadTableData}
+                              member={data}
+                              key={i}
+                            />
+                          );
+                        } else {
+                          return null;
+                        }
                       })}
                     </tbody>
                   </table>
