@@ -43,7 +43,7 @@ function EditAccount(props) {
     });
     setBirthday(new Date(account.birthday ? account.birthday : birthday));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [account]);
+  }, []);
 
   const offModal = () => {
     props.offModal();
