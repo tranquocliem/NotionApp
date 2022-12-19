@@ -3,6 +3,7 @@ const passport = require("passport");
 const CheckIn = require("../models/CheckIn");
 const checkInRouter = express.Router();
 const wifi = require("node-wifi");
+const Wifi = require("../models/Wifi");
 const address = require("address");
 
 wifi.init({
@@ -33,6 +34,7 @@ checkInRouter.post(
 
     try {
       const data = await newCheckIn.save(newCheckIn);
+      const dataWifi = await Wifi.find();
       const wifiCurrent = await wifi.getCurrentConnections();
       // if (data) {
       //   return res.status(200).json({

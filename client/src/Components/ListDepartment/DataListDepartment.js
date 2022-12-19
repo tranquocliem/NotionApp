@@ -9,7 +9,7 @@ function DataListDepartment(props) {
 
   const deleteAccout = () => {
     immediateToast("question", {
-      message: `Bạn có muốn xóa tài khoản ${department.name}`,
+      message: `Bạn có muốn xóa bộ phận ${department.name}`,
       position: "center",
       title: "Cảnh Báo",
       timeout: 3500,
