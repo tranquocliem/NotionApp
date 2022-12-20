@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { createCheckOut } from "../../Service/CheckOutService";
 import { MyAlert } from "../Alert/Alert";
 
-function CheckOut() {
+function CheckOut(props) {
   const [dataCapcha, setDataCapcha] = useState();
   const [inputCapcha, setInputCapcha] = useState("");
   const [pending, setPending] = useState(false);
@@ -100,7 +100,8 @@ function CheckOut() {
       const data = await createCheckOut();
       if (data && data.status) {
         MyAlert("succ", `Bạn Đã ${data.message}`, 4500);
-        return setPending(false);
+        setPending(false);
+        props.history.push("/tai-khoan/tranquocliem");
       } else {
         MyAlert("err", data.message, 3500);
         return setPending(false);

@@ -30,10 +30,8 @@ export const createCheckIn = () => {
     })
     .catch((err) => {
       return {
-        message: {
-          msgBody: "CheckIn không thành công",
-          msgError: true,
-        },
+        message: "Check In không thành công",
+        status: false,
         err,
       };
     });

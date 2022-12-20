@@ -30,10 +30,8 @@ export const createCheckOut = () => {
     })
     .catch((err) => {
       return {
-        message: {
-          msgBody: "Check Out không thành công",
-          msgError: true,
-        },
+        message: "Check Out không thành công",
+        status: false,
         err,
       };
     });

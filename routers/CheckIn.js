@@ -11,7 +11,7 @@ wifi.init({
   iface: null,
 });
 
-// create department
+// create check in
 checkInRouter.post(
   "/createCheckIn",
   passport.authenticate("jwt", { session: false }),

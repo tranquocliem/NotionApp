@@ -13,7 +13,7 @@ Version V1.1.1
 - Đã fix lại logic hiển thị nút xóa bộ phận (chỉ spadmin và admin)
 - Thay đổi lại trang login trở nên ngầu hơn, với hiệu ứng ô vuông kèm đèn led chạy từ trên xuống
 
-BIG UPDATE Version V2.1.0
+BIG UPDATE Version 2.1.0
 - Thêm chức năng đăng ký thiết bị để thực hiện chức năng chek in-out (lưu ý không đăng ký thiết bị sẽ không thực hiện được chức năng check in-out)
  + Cách đăng ký: vào thông tin tài khoản cá nhân mình đã chuẩn bị sẵn nút để bấm đăng ký thiết bị (nút màu xanh nước biển)
 - Thêm chức năng check in-out bằng wifi cả hai trường hợp tại công ty và wfh (lưu ý chỉ bằng wifi)
@@ -23,3 +23,5 @@ BIG UPDATE Version V2.1.0
 - Thêm chức năng xem thông tin check in-out của nhân viên (chỉ dành cho admin và spadmin)
  + Cách xem: vào phần tất cả nhân viên bấm vào một nhân viên bất kỳ mà bạn thích, mình đã chuẩn bị sẵn nút bấm để xem (nút màu vàng để xem thông tin check in, màu đỏ xem thôn tin check out)
  + Lưu ý: chức năng chỉ dành cho admin và spadmin các loại tài khoản khác đừng nên thắc mắc sao lại không có nhé.
+
+Xin mời các bạn Dev vào test và vạch lá tìm bug, để giúp phần mềm phát triển hơn (nhưng người làm vẫn mong là không có bug). Lưu ý mình đã xóa hết tài khoản rồi nên bạn nào cần thì liên hệ mình nhé. Xin chân thành cảm ơn
