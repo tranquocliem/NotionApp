@@ -12,6 +12,12 @@ import ListDepartment from "../ListDepartment/ListDepartment";
 import AllMembers from "../AllMembers/AllMembers";
 import ChangePass from "../ChangPass/ChangePass";
 import DetailsAccount from "../DetailsAccount/DetailsAccount";
+import CheckIn from "../CheckIn/CheckIn";
+import CheckOut from "../CheckOut/CheckOut";
+import CheckInTable from "../CheckIn/CheckInTable";
+import CheckOutTable from "../CheckOut/CheckOutTable";
+import TableCheckInID from "../TableCheckInID/TableCheckInID";
+import TableCheckOutID from "../TableCheckOutID/TableCheckOutID";
 function DuongDanURL() {
   return (
     <>
@@ -62,6 +68,37 @@ function DuongDanURL() {
           path="/doi-mat-khau/:username"
           roles={["spadmin", "admin", "leader", "member"]}
           component={ChangePass}
+        />
+        <PrivateRouter
+          path="/checkin"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={CheckIn}
+        />
+        <PrivateRouter
+          path="/checkout"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={CheckOut}
+        />
+        <PrivateRouter
+          path="/thong-tin-check-in/:user"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={CheckInTable}
+        />
+        <PrivateRouter
+          path="/thong-tin-check-out/:user"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={CheckOutTable}
+        />
+
+        <PrivateRouter
+          path="/check-in/:id/:name"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={TableCheckInID}
+        />
+        <PrivateRouter
+          path="/check-out/:id/:name"
+          roles={["spadmin", "admin", "leader", "member"]}
+          component={TableCheckOutID}
         />
 
         {/* <Route path="*" component={NotFound} /> */}

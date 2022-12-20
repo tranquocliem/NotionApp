@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const CheckInSchema = new mongoose.Schema(
+const CheckOutSchema = new mongoose.Schema(
   {
     device: {
       type: mongoose.Schema.Types.ObjectId,
@@ -22,4 +22,4 @@ const CheckInSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("CheckIn", CheckInSchema);
+module.exports = mongoose.model("CheckOut", CheckOutSchema);

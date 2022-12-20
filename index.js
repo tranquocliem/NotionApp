@@ -115,6 +115,7 @@ app.use("/api/department", require("./routers/Department"));
 app.use("/api/devices", require("./routers/Devices"));
 app.use("/api/wifi", require("./routers/Wifi"));
 app.use("/api/checkin", require("./routers/CheckIn"));
+app.use("/api/checkout", require("./routers/CheckOut"));
 app.use("/api/category", require("./routers/Category"));
 app.use("/api/post", require("./routers/Post"));
 app.use("/api/test", require("./routers/Test"));

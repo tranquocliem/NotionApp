@@ -62,18 +62,6 @@ function Sidebar(props) {
                       ? `🎉 Xin chào, ${displayName[displayName.length - 1]}`
                       : "Không Xác Định"}
                   </h5>
-                  {/* {user.fullname && user.fullname.length <= 15 ? (
-                    <h5 className="mb-0 font-weight-normal">
-                      {user && user.fullname ? user.fullname : "Không Xác Định"}
-                    </h5>
-                  ) : (
-                    <p
-                      style={{ fontSize: "13px" }}
-                      className="mb-0 font-weight-normal"
-                    >
-                      {user && user.fullname ? user.fullname : "Không Xác Định"}
-                    </p>
-                  )} */}
 
                   <span className="text-uppercase">{user && user.role}</span>
                 </div>
@@ -148,12 +136,34 @@ function Sidebar(props) {
               <span className="menu-title">Trang Chủ</span>
             </NavLink>
           </li>
+          <li className="nav-item menu-items">
+            <NavLink exact className="nav-link" to="/checkin">
+              <span className="menu-icon">
+                <i
+                  className="fa-solid fa-calendar-check"
+                  color={styleColor.warnning}
+                ></i>
+              </span>
+              <span className="menu-title">Check In</span>
+            </NavLink>
+          </li>
+          <li className="nav-item menu-items">
+            <NavLink exact className="nav-link" to="/checkout">
+              <span className="menu-icon">
+                <i
+                  className="fa-solid fa-calendar-check"
+                  color={styleColor.danger}
+                ></i>
+              </span>
+              <span className="menu-title">Check Out</span>
+            </NavLink>
+          </li>
           <div className="dropdown-divider"></div>
           <li className="nav-item menu-items">
             <NavLink to="/tat-ca-nhan-vien" className="nav-link" href="#!">
               <span className="menu-icon">
                 {/* <i>👆</i> */}
-                <i>All</i>
+                <i className="text-danger">All</i>
               </span>
               <span className="menu-title">Tất Cả Nhân Viên</span>
             </NavLink>

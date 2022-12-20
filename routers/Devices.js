@@ -77,9 +77,19 @@ devicesRouter.get(
   async (req, res) => {
     const { id } = req.user;
     try {
-      const divece = await Devices.findOne({ writer: id });
-
-      return res.status(200).json(divece);
+      const device = await Devices.findOne({ writer: id });
+      if (device) {
+        return res.status(200).json({
+          message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
+          device,
+          status: true,
+        });
+      } else {
+        return res.status(200).json({
+          message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
+          status: false,
+        });
+      }
     } catch (error) {
       return res.status(500).json(error);
     }

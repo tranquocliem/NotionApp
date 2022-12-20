@@ -5,11 +5,16 @@ import EditAccount from "./EditAccount";
 import "./index.css";
 import moment from "moment";
 import "moment/locale/vi";
+import { addDevice, getMyDevice } from "../../Service/DeviceService";
+import { MyAlert } from "../Alert/Alert";
+import { Link } from "react-router-dom";
 
 function MyAccount() {
   const [account, setAccount] = useState();
   const [onModal, setOnModal] = useState(false);
-  const { setUser } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+  const [dataDevice, setDataDevice] = useState(true);
+  const [pendingBtn, setPendingBtn] = useState(false);
 
   const offModal = () => {
     setOnModal(false);
@@ -21,6 +26,18 @@ function MyAccount() {
       setAccount(data.dataUser);
     });
   }, []);
+
+  useEffect(() => {
+    async function getAPIDevice() {
+      const dataDevice = await getMyDevice();
+      if (dataDevice && dataDevice.status) {
+        setDataDevice(true);
+      } else {
+        setDataDevice(false);
+      }
+    }
+    getAPIDevice();
+  }, [dataDevice]);
 
   const updateProfile = () => {
     getMyAccount().then((data) => {
@@ -34,6 +51,24 @@ function MyAccount() {
   const dateCre = moment(
     account && account.birthday ? account.birthday : null
   ).format("DD/MM/YYYY");
+
+  const btnAddDevice = async () => {
+    setPendingBtn(true);
+    const data = await addDevice();
+    if (data && data.status) {
+      MyAlert("succ", "Bạn đã thêm thiết bị thành công", 3000);
+      const dataDevice = await getMyDevice();
+      if (dataDevice && dataDevice.status) {
+        setDataDevice(true);
+        setPendingBtn(false);
+      } else {
+        setDataDevice(false);
+        setPendingBtn(false);
+      }
+    } else {
+      MyAlert("err", "Thêm thiết bị không thành công", 3000);
+    }
+  };
 
   return (
     <>
@@ -198,6 +233,51 @@ function MyAccount() {
                             : "Không xác định"}
                         </span>
                       </h6>
+                      <div className="dropdown-divider"></div>
+                    </div>
+                  </div>
+
+                  <div className="row">
+                    <div className="col-xl-12 text-left">
+                      {!dataDevice ? (
+                        <button
+                          className="btn btn-primary"
+                          onClick={btnAddDevice}
+                        >
+                          {pendingBtn ? (
+                            <div className="spinner-border" role="status">
+                              <span className="sr-only">Loading...</span>
+                            </div>
+                          ) : (
+                            "Đăng ký thiết bị"
+                          )}
+                        </button>
+                      ) : (
+                        <i className="text-muted">
+                          ✔ Tài khoản của bạn đã được đăng ký thiết bị
+                        </i>
+                      )}
+
+                      <div className="dropdown-divider"></div>
+                    </div>
+                  </div>
+
+                  <div className="row mt-2">
+                    <div className="col-xl-12 text-left">
+                      <Link
+                        to={`/thong-tin-check-in/${user.username}`}
+                        className="btn btn-warning"
+                      >
+                        Thông Tin Check In
+                      </Link>
+
+                      <Link
+                        to={`/thong-tin-check-out/${user.username}`}
+                        className="btn btn-danger mx-3"
+                      >
+                        Thông Tin Check Out
+                      </Link>
+
                       <div className="dropdown-divider"></div>
                     </div>
                   </div>

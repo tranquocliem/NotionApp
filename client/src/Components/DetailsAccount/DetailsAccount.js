@@ -1,6 +1,6 @@
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { AuthContext } from "../../Context/AuthContext";
 import { getAccountById } from "../../Service/AccountService";
 import EditDetailsAccount from "./EditDetailsAccount";
@@ -21,7 +21,7 @@ function DetailsAccount() {
     getAccountById(id).then((data) => {
       setAccount(data.dataUser);
     });
-  }, [id, account]);
+  }, [id]);
 
   const updateProfile = () => {
     getAccountById(id).then((data) => {
@@ -204,6 +204,28 @@ function DetailsAccount() {
                       <div className="dropdown-divider"></div>
                     </div>
                   </div>
+                  {(user.role && user.role === "spadmin") ||
+                  (user.role && user.role === "admin") ? (
+                    <div className="row mt-2">
+                      <div className="col-xl-12 text-left">
+                        <Link
+                          to={`/check-in/${id}/${account.fullname}`}
+                          className="btn btn-warning"
+                        >
+                          Thông Tin Check In
+                        </Link>
+
+                        <Link
+                          to={`/check-out/${id}/${account.fullname}`}
+                          className="btn btn-danger mx-3"
+                        >
+                          Thông Tin Check Out
+                        </Link>
+
+                        <div className="dropdown-divider"></div>
+                      </div>
+                    </div>
+                  ) : null}
 
                   <div className="row mt-5">
                     <div className="col-xl-12 text-left">

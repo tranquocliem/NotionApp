@@ -1,7 +1,7 @@
 const express = require("express");
 const passport = require("passport");
-const CheckIn = require("../models/CheckIn");
-const checkInRouter = express.Router();
+const CheckOut = require("../models/CheckOut");
+const checkOutRouter = express.Router();
 const wifi = require("node-wifi");
 const Wifi = require("../models/Wifi");
 const Devices = require("../models/Devices");
@@ -11,9 +11,9 @@ wifi.init({
   iface: null,
 });
 
-// create department
-checkInRouter.post(
-  "/createCheckIn",
+// create check out
+checkOutRouter.post(
+  "/createCheckOut",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { id } = req.user;
@@ -46,42 +46,42 @@ checkInRouter.post(
         dataWifi[0].ssid === wifiCurrent[0].ssid &&
         myMac.mac === macCurrent
       ) {
-        const newCheckIn = new CheckIn({
+        const newCheckOut = new CheckOut({
           writer: id,
           device: myMac._id,
           typecheckin: "Trực Tiếp",
           datetime: today.toLocaleString("en-UK"),
         });
-        const data = await newCheckIn.save(newCheckIn);
+        const data = await newCheckOut.save(newCheckOut);
         if (data) {
           return res.status(200).json({
-            message: "Check In Thành Công Tại Công Ty",
+            message: "Check Out Thành Công Tại Công Ty",
             status: true,
           });
         } else {
           return res.status(400).json({
-            message: "Check In Không Thành Công Tại Công Ty",
+            message: "Check Out Không Thành Công Tại Công Ty",
             status: false,
           });
         }
       }
 
       if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
-        const newCheckIn = new CheckIn({
+        const newCheckOut = new CheckOut({
           writer: id,
           device: myMac._id,
           typecheckin: "WFH",
           datetime: today.toLocaleString("en-UK"),
         });
-        const data = await newCheckIn.save(newCheckIn);
+        const data = await newCheckOut.save(newCheckOut);
         if (data) {
           return res.status(200).json({
-            message: "Check In Thành Công Tại Nhà (WFH)",
+            message: "Check Out Thành Công Tại Nhà (WFH)",
             status: true,
           });
         } else {
           return res.status(400).json({
-            message: "Check In Không Thành Công Tại Nhà (WFH)",
+            message: "Check Out Không Thành Công Tại Nhà (WFH)",
             status: false,
           });
         }
@@ -92,7 +92,7 @@ checkInRouter.post(
         myMac.mac !== macCurrent
       ) {
         return res.status(203).json({
-          message: "Check In Không Thành Công",
+          message: "Check Out Không Thành Công",
           status: false,
         });
       }
@@ -102,7 +102,7 @@ checkInRouter.post(
         myMac.mac !== macCurrent
       ) {
         return res.status(203).json({
-          message: "Check In Không Thành Công",
+          message: "Check Out Không Thành Công",
           status: false,
         });
       }
@@ -113,14 +113,14 @@ checkInRouter.post(
 );
 
 //load all checkin
-checkInRouter.get(
-  "/getCheckIns",
+checkOutRouter.get(
+  "/getCheckOuts",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { role } = req.user;
     if (role === "spadmin" || role === "admin") {
       try {
-        const dataCheckins = await CheckIn.find()
+        const dataCheckouts = await CheckOut.find()
           .populate({
             path: "writer",
             select: "-password",
@@ -139,14 +139,14 @@ checkInRouter.get(
 );
 
 // load my checkin
-checkInRouter.get(
-  "/getMyCheckin",
+checkOutRouter.get(
+  "/getMyCheckout",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const writer = req.user.id;
 
     try {
-      const dataCheckin = await CheckIn.find({ writer });
+      const dataCheckin = await CheckOut.find({ writer });
 
       return res.status(200).json(dataCheckin);
     } catch (error) {
@@ -155,37 +155,21 @@ checkInRouter.get(
   }
 );
 
-//load Department by id
-checkInRouter.get(
-  "/getDepartmentByID/:id",
-  passport.authenticate("jwt", { session: false }),
-  async (req, res) => {
-    const { id } = req.params;
-    try {
-      const dataDepartment = await Department.findById(id);
-
-      return res.status(200).json(dataDepartment);
-    } catch (error) {
-      return res.status(500).json(error);
-    }
-  }
-);
-
-//load checkin by user
-checkInRouter.get(
-  "/getCheckInByUser/:id",
+//load checkout by id
+checkOutRouter.get(
+  "/getCheckOutByID/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
     const { id } = req.params;
     const { role } = req.user;
     if (role === "spadmin" || role === "admin") {
       try {
-        const dataCheckIn = await CheckIn.find({ writer: id }).populate({
+        const dataCheckOut = await CheckOut.find({ writer: id }).populate({
           path: "writer",
           select: "-password",
         });
-        if (dataCheckIn) {
-          return res.status(200).json({ dataCheckIn, status: true });
+        if (dataCheckOut) {
+          return res.status(200).json({ dataCheckOut, status: true });
         } else {
           return res
             .status(203)
@@ -203,7 +187,7 @@ checkInRouter.get(
 );
 
 // update Department by user
-checkInRouter.patch(
+checkOutRouter.patch(
   "/updateDepartment/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -242,7 +226,7 @@ checkInRouter.patch(
 );
 
 // delete Department by user
-checkInRouter.delete(
+checkOutRouter.delete(
   "/deleteDepartment/:id",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -276,7 +260,7 @@ checkInRouter.delete(
 );
 
 // search Department
-checkInRouter.get(
+checkOutRouter.get(
   "/searchDepartment",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
@@ -294,4 +278,4 @@ checkInRouter.get(
   }
 );
 
-module.exports = checkInRouter;
+module.exports = checkOutRouter;
