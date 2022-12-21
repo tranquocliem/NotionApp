@@ -7,7 +7,7 @@ const Wifi = require("../models/Wifi");
 const Devices = require("../models/Devices");
 const address = require("address");
 let spawn = require("child_process").spawn;
-
+const wifiPassword = require("wifi-password");
 wifi.init({
   iface: null,
 });
@@ -99,90 +99,98 @@ checkInRouter.post(
       });
     }
 
-    try {
-      let today = new Date();
-      const dataWifi = await Wifi.find();
-      wifiNetworksRSSI(async function (err, wifiCurrent, raw) {
-        if (!err) {
-          const myMac = await Devices.findOne({ writer: id });
-          const macCurrent = getmac();
-          if (!myMac) {
-            return res.status(203).json({
-              message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
-              status: false,
-            });
-          }
-          if (
-            dataWifi[0].ssid === wifiCurrent[0].ssid &&
-            myMac.mac === macCurrent
-          ) {
-            const newCheckIn = new CheckIn({
-              writer: id,
-              device: myMac._id,
-              typecheckin: "Trực Tiếp",
-              datetime: today.toLocaleString("en-UK"),
-            });
-            const data = await newCheckIn.save(newCheckIn);
-            if (data) {
-              return res.status(200).json({
-                message: "Check In Thành Công Tại Công Ty",
-                status: true,
-              });
-            } else {
-              return res.status(400).json({
-                message: "Check In Không Thành Công Tại Công Ty",
-                status: false,
-              });
-            }
-          }
-
-          if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
-            const newCheckIn = new CheckIn({
-              writer: id,
-              device: myMac._id,
-              typecheckin: "WFH",
-              datetime: today.toLocaleString("en-UK"),
-            });
-            const data = await newCheckIn.save(newCheckIn);
-            if (data) {
-              return res.status(200).json({
-                message: "Check In Thành Công Tại Nhà (WFH)",
-                status: true,
-              });
-            } else {
-              return res.status(400).json({
-                message: "Check In Không Thành Công Tại Nhà (WFH)",
-                status: false,
-              });
-            }
-          }
-
-          if (
-            dataWifi[0].ssid === wifiCurrent[0].ssid &&
-            myMac.mac !== macCurrent
-          ) {
-            return res.status(203).json({
-              message: "Check In Không Thành Công",
-              status: false,
-            });
-          }
-
-          if (
-            dataWifi[0].ssid !== wifiCurrent[0].ssid &&
-            myMac.mac !== macCurrent
-          ) {
-            return res.status(203).json({
-              message: "Check In Không Thành Công",
-              status: false,
-            });
-          }
-        } else {
-          return res.status(500).json(err);
-        }
+    wifiPassword()
+      .then((password) => {
+        console.log(password);
+      })
+      .catch((error) => {
+        console.error(error);
       });
-    } catch (error) {
-      return res.status(500).json(error);
-    }
+
+    // try {
+    //   let today = new Date();
+    //   const dataWifi = await Wifi.find();
+    //   wifiNetworksRSSI(async function (err, wifiCurrent, raw) {
+    //     if (!err) {
+    //       const myMac = await Devices.findOne({ writer: id });
+    //       const macCurrent = getmac();
+    //       if (!myMac) {
+    //         return res.status(203).json({
+    //           message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
+    //           status: false,
+    //         });
+    //       }
+    //       if (
+    //         dataWifi[0].ssid === wifiCurrent[0].ssid &&
+    //         myMac.mac === macCurrent
+    //       ) {
+    //         const newCheckIn = new CheckIn({
+    //           writer: id,
+    //           device: myMac._id,
+    //           typecheckin: "Trực Tiếp",
+    //           datetime: today.toLocaleString("en-UK"),
+    //         });
+    //         const data = await newCheckIn.save(newCheckIn);
+    //         if (data) {
+    //           return res.status(200).json({
+    //             message: "Check In Thành Công Tại Công Ty",
+    //             status: true,
+    //           });
+    //         } else {
+    //           return res.status(400).json({
+    //             message: "Check In Không Thành Công Tại Công Ty",
+    //             status: false,
+    //           });
+    //         }
+    //       }
+
+    //       if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
+    //         const newCheckIn = new CheckIn({
+    //           writer: id,
+    //           device: myMac._id,
+    //           typecheckin: "WFH",
+    //           datetime: today.toLocaleString("en-UK"),
+    //         });
+    //         const data = await newCheckIn.save(newCheckIn);
+    //         if (data) {
+    //           return res.status(200).json({
+    //             message: "Check In Thành Công Tại Nhà (WFH)",
+    //             status: true,
+    //           });
+    //         } else {
+    //           return res.status(400).json({
+    //             message: "Check In Không Thành Công Tại Nhà (WFH)",
+    //             status: false,
+    //           });
+    //         }
+    //       }
+
+    //       if (
+    //         dataWifi[0].ssid === wifiCurrent[0].ssid &&
+    //         myMac.mac !== macCurrent
+    //       ) {
+    //         return res.status(203).json({
+    //           message: "Check In Không Thành Công",
+    //           status: false,
+    //         });
+    //       }
+
+    //       if (
+    //         dataWifi[0].ssid !== wifiCurrent[0].ssid &&
+    //         myMac.mac !== macCurrent
+    //       ) {
+    //         return res.status(203).json({
+    //           message: "Check In Không Thành Công",
+    //           status: false,
+    //         });
+    //       }
+    //     } else {
+    //       return res.status(500).json(err);
+    //     }
+    //   });
+    // } catch (error) {
+    //   return res.status(500).json(error);
+    // }
   }
 );
 
