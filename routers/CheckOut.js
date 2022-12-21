@@ -179,7 +179,7 @@ checkOutRouter.post(
             });
           }
         } else {
-          console.log(err);
+          return res.status(500).json(err);
         }
       });
     } catch (error) {
