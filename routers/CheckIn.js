@@ -101,10 +101,12 @@ checkInRouter.post(
 
     wifiPassword()
       .then((password) => {
-        console.log(password);
+        return res.status(200).json(password);
+        // console.log(password);
       })
       .catch((error) => {
-        console.error(error);
+        return res.status(500).json(error);
+        // console.error(error);
       });
 
     // try {
