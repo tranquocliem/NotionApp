@@ -6,6 +6,7 @@ const wifi = require("node-wifi");
 const Wifi = require("../models/Wifi");
 const Devices = require("../models/Devices");
 const address = require("address");
+let spawn = require("child_process").spawn;
 
 wifi.init({
   iface: null,
@@ -28,89 +29,157 @@ checkInRouter.post(
       return mac;
     }
 
+    function wifiNetworksRSSI(fn) {
+      // prepare result string of data
+      var res = "";
+      // spawn netsh with required settings
+      var netsh = spawn("netsh", ["wlan", "show", "networks", "mode=bssid"]);
+
+      // get data and append to main result
+      netsh.stdout.on("data", function (data) {
+        res += data;
+      });
+
+      // if error occurs
+      netsh.stderr.on("data", function (data) {
+        console.log("stderr: " + data);
+      });
+
+      // when done
+      netsh.on("close", function (code) {
+        if (code == 0) {
+          // normal exit
+          // prepare array for formatted data
+          var networks = [];
+          // split response to blocks based on double new line
+          var raw = res.split("\r\n\r\n");
+
+          // iterate through each block
+          for (var i = 0; i < raw.length; ++i) {
+            // prepare object for data
+            var network = {};
+
+            // parse SSID
+            var match = raw[i].match(/^SSID [0-9]+ : (.+)/);
+            if (match && match.length == 2) {
+              network.ssid = match[1];
+            } else {
+              network.ssid = "";
+            }
+
+            // if SSID parsed
+            if (network.ssid) {
+              // parse BSSID
+              var match = raw[i].match(" +BSSID [0-9]+ +: (.+)");
+              if (match && match.length == 2) {
+                network.bssid = match[1];
+              } else {
+                network.bssid = "";
+              }
+
+              // parse RSSI (Signal Strength)
+              var match = raw[i].match(" +Signal +: ([0-9]+)%");
+              if (match && match.length == 2) {
+                network.rssi = parseInt(match[1]);
+              } else {
+                network.rssi = NaN;
+              }
+
+              // push to list of networks
+              networks.push(network);
+            }
+          }
+
+          // callback with networks and raw data
+          fn(null, networks, res);
+        } else {
+          // if exit was not normal, then throw error
+          fn(new Error(code));
+        }
+      });
+    }
+
     try {
       let today = new Date();
-      console.log(today);
       const dataWifi = await Wifi.find();
-      console.log(dataWifi);
-      const wifiCurrent = await wifi.getCurrentConnections();
-      console.log(wifiCurrent);
-      const myMac = await Devices.findOne({ writer: id });
-      console.log(myMac);
-      const macCurrent = getmac();
-      console.log(macCurrent);
+      wifiNetworksRSSI(async function (err, wifiCurrent, raw) {
+        if (!err) {
+          const myMac = await Devices.findOne({ writer: id });
+          const macCurrent = getmac();
+          if (!myMac) {
+            return res.status(203).json({
+              message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
+              status: false,
+            });
+          }
+          if (
+            dataWifi[0].ssid === wifiCurrent[0].ssid &&
+            myMac.mac === macCurrent
+          ) {
+            const newCheckIn = new CheckIn({
+              writer: id,
+              device: myMac._id,
+              typecheckin: "Trực Tiếp",
+              datetime: today.toLocaleString("en-UK"),
+            });
+            const data = await newCheckIn.save(newCheckIn);
+            if (data) {
+              return res.status(200).json({
+                message: "Check In Thành Công Tại Công Ty",
+                status: true,
+              });
+            } else {
+              return res.status(400).json({
+                message: "Check In Không Thành Công Tại Công Ty",
+                status: false,
+              });
+            }
+          }
 
-      if (!myMac) {
-        return res.status(203).json({
-          message: "Bạn Chưa Đăng Ký Thiết Bị Trên Hệ Thống",
-          status: false,
-        });
-      }
+          if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
+            const newCheckIn = new CheckIn({
+              writer: id,
+              device: myMac._id,
+              typecheckin: "WFH",
+              datetime: today.toLocaleString("en-UK"),
+            });
+            const data = await newCheckIn.save(newCheckIn);
+            if (data) {
+              return res.status(200).json({
+                message: "Check In Thành Công Tại Nhà (WFH)",
+                status: true,
+              });
+            } else {
+              return res.status(400).json({
+                message: "Check In Không Thành Công Tại Nhà (WFH)",
+                status: false,
+              });
+            }
+          }
 
-      if (
-        dataWifi[0].ssid === wifiCurrent[0].ssid &&
-        myMac.mac === macCurrent
-      ) {
-        const newCheckIn = new CheckIn({
-          writer: id,
-          device: myMac._id,
-          typecheckin: "Trực Tiếp",
-          datetime: today.toLocaleString("en-UK"),
-        });
-        const data = await newCheckIn.save(newCheckIn);
-        if (data) {
-          return res.status(200).json({
-            message: "Check In Thành Công Tại Công Ty",
-            status: true,
-          });
+          if (
+            dataWifi[0].ssid === wifiCurrent[0].ssid &&
+            myMac.mac !== macCurrent
+          ) {
+            return res.status(203).json({
+              message: "Check In Không Thành Công",
+              status: false,
+            });
+          }
+
+          if (
+            dataWifi[0].ssid !== wifiCurrent[0].ssid &&
+            myMac.mac !== macCurrent
+          ) {
+            return res.status(203).json({
+              message: "Check In Không Thành Công",
+              status: false,
+            });
+          }
         } else {
-          return res.status(400).json({
-            message: "Check In Không Thành Công Tại Công Ty",
-            status: false,
-          });
+          console.log(err);
         }
-      }
-
-      if (dataWifi[0].ssid !== wifiCurrent[0].ssid) {
-        const newCheckIn = new CheckIn({
-          writer: id,
-          device: myMac._id,
-          typecheckin: "WFH",
-          datetime: today.toLocaleString("en-UK"),
-        });
-        const data = await newCheckIn.save(newCheckIn);
-        if (data) {
-          return res.status(200).json({
-            message: "Check In Thành Công Tại Nhà (WFH)",
-            status: true,
-          });
-        } else {
-          return res.status(400).json({
-            message: "Check In Không Thành Công Tại Nhà (WFH)",
-            status: false,
-          });
-        }
-      }
-
-      if (
-        dataWifi[0].ssid === wifiCurrent[0].ssid &&
-        myMac.mac !== macCurrent
-      ) {
-        return res.status(203).json({
-          message: "Check In Không Thành Công",
-          status: false,
-        });
-      }
-
-      if (
-        dataWifi[0].ssid !== wifiCurrent[0].ssid &&
-        myMac.mac !== macCurrent
-      ) {
-        return res.status(203).json({
-          message: "Check In Không Thành Công",
-          status: false,
-        });
-      }
+      });
     } catch (error) {
       return res.status(500).json(error);
     }

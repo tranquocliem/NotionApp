@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { createCheckIn } from "../../Service/CheckInService";
 import { MyAlert } from "../Alert/Alert";
 import "./index.css";
-
 function CheckIn(props) {
   const [dataCapcha, setDataCapcha] = useState();
   const [inputCapcha, setInputCapcha] = useState("");
