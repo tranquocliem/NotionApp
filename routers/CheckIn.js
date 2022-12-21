@@ -30,10 +30,15 @@ checkInRouter.post(
 
     try {
       let today = new Date();
+      console.log(today);
       const dataWifi = await Wifi.find();
+      console.log(dataWifi);
       const wifiCurrent = await wifi.getCurrentConnections();
+      console.log(wifiCurrent);
       const myMac = await Devices.findOne({ writer: id });
+      console.log(myMac);
       const macCurrent = getmac();
+      console.log(macCurrent);
 
       if (!myMac) {
         return res.status(203).json({
