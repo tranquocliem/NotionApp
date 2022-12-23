@@ -197,7 +197,7 @@ function MyAccount() {
                         Hợp đồng:{" "}
                         <span className="float-right">
                           {account.contract
-                            ? account.contract
+                            ? account.contract.typeContract
                             : "Không xác định"}
                         </span>
                       </h6>
@@ -241,7 +241,7 @@ function MyAccount() {
                     <div className="col-xl-12 text-left">
                       {!dataDevice ? (
                         <button
-                          className="btn btn-primary"
+                          className="btn btn-primary mx-3"
                           onClick={btnAddDevice}
                         >
                           {pendingBtn ? (
@@ -266,17 +266,32 @@ function MyAccount() {
                     <div className="col-xl-12 text-left">
                       <Link
                         to={`/thong-tin-check-in/${user.username}`}
-                        className="btn btn-warning"
+                        className="mx-3 mt-2"
                       >
-                        Thông Tin Check In
+                        <button className="btn btn-warning" disabled>
+                          Thông Tin Check In
+                        </button>
                       </Link>
 
                       <Link
                         to={`/thong-tin-check-out/${user.username}`}
-                        className="btn btn-danger mx-3"
+                        className="mx-3 mt-2"
                       >
-                        Thông Tin Check Out
+                        <button className="btn btn-danger" disabled>
+                          Thông Tin Check Out
+                        </button>
                       </Link>
+
+                      {account.contract && account.contract.typeContract ? (
+                        <Link
+                          to={`/check-out/${account._id}/${account.fullname}`}
+                          className=" mx-3  mt-2"
+                        >
+                          <button className="btn btn-success">
+                            Thông Tin Hợp Đồng
+                          </button>
+                        </Link>
+                      ) : null}
 
                       <div className="dropdown-divider"></div>
                     </div>

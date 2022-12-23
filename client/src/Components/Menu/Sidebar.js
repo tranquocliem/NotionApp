@@ -136,7 +136,7 @@ function Sidebar(props) {
               <span className="menu-title">Trang Chủ</span>
             </NavLink>
           </li>
-          <li className="nav-item menu-items">
+          <li className="nav-item menu-items checkinout-sidebar">
             <NavLink exact className="nav-link" to="/checkin">
               <span className="menu-icon">
                 <i
@@ -144,10 +144,13 @@ function Sidebar(props) {
                   color={styleColor.warnning}
                 ></i>
               </span>
-              <span className="menu-title">Check In</span>
+              <span className="menu-title">
+                <span className="checkinout_title">Check In</span>{" "}
+                <span className="text-danger">(Tạm khóa)</span>
+              </span>
             </NavLink>
           </li>
-          <li className="nav-item menu-items">
+          <li className="nav-item menu-items checkinout-sidebar">
             <NavLink exact className="nav-link" to="/checkout">
               <span className="menu-icon">
                 <i
@@ -155,7 +158,10 @@ function Sidebar(props) {
                   color={styleColor.danger}
                 ></i>
               </span>
-              <span className="menu-title">Check Out</span>
+              <span className="menu-title">
+                <span className="checkinout_title">Check Out</span>{" "}
+                <span className="text-danger">(Tạm khóa)</span>
+              </span>
             </NavLink>
           </li>
           <div className="dropdown-divider"></div>

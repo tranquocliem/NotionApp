@@ -170,6 +170,15 @@ require("dotenv").config({
 //   });
 // }
 
+// var Traceroute = require("traceroute-lite");
+// var traceroute = new Traceroute("8.8.8.8");
+// traceroute.on("hop", function (hop) {
+//   hop;
+// });
+// traceroute.start(function (err, hops) {
+//   console.log(hops);
+// });
+
 app.use(cors());
 app.use(cookieParser());
 app.use(express.json());
@@ -192,6 +201,7 @@ mongoose
 //đường dẫn các api
 app.use("/api/account", require("./routers/Account"));
 app.use("/api/department", require("./routers/Department"));
+app.use("/api/contract", require("./routers/Contract"));
 app.use("/api/devices", require("./routers/Devices"));
 app.use("/api/wifi", require("./routers/Wifi"));
 app.use("/api/checkin", require("./routers/CheckIn"));

@@ -1,6 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
 import { isAuthenticated as chechAuth } from "../Service/AccountService";
-
 export const AuthContext = createContext();
 
 const Auth = ({ children }) => {
@@ -17,6 +16,15 @@ const Auth = ({ children }) => {
     };
     apiAuth();
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+      console.log(position.coords.latitude); // logs the latitude of the device's current position
+      console.log(position.coords.longitude); // logs the longitude of the device's current position
+      console.log(position.coords.accuracy); // logs the accuracy of the device's current position in meters
+    });
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{ user, setUser, isAuthenticated, setIsAuthenticated }}

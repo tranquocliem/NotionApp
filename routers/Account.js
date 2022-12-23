@@ -193,10 +193,11 @@ accRouter.get(
   async (req, res) => {
     const { id } = req.user;
     try {
-      const dataUser = await Account.findOne(
-        { _id: id },
-        { password: 0 }
-      ).populate({ path: "department", model: "Department" });
+      const dataUser = await Account.findOne({ _id: id }, { password: 0 })
+        .populate({ path: "department", model: "Department" })
+        .populate({
+          path: "contract",
+        });
       return res.status(200).json({ dataUser, status: true });
     } catch (error) {
       return res.status(500).json(error);
@@ -227,12 +228,13 @@ accRouter.get(
   async (req, res) => {
     const { id } = req.params;
     try {
-      const dataUser = await Account.findById(
-        { _id: id },
-        { password: 0 }
-      ).populate({
-        path: "department",
-      });
+      const dataUser = await Account.findById({ _id: id }, { password: 0 })
+        .populate({
+          path: "department",
+        })
+        .populate({
+          path: "contract",
+        });
       return res.status(200).json({ dataUser, status: true });
     } catch (error) {
       return res.status(500).json(error);

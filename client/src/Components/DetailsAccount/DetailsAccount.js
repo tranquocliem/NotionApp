@@ -16,6 +16,7 @@ function DetailsAccount() {
   };
 
   const id = useParams().id;
+  const username = useParams().username;
 
   useEffect(() => {
     getAccountById(id).then((data) => {
@@ -164,9 +165,19 @@ function DetailsAccount() {
                       <h6>
                         Hợp đồng:{" "}
                         <span className="float-right">
-                          {account.contract
-                            ? account.contract
-                            : "Không xác định"}
+                          {account.contract ? (
+                            account.contract.typeContract
+                          ) : (user.role && user.role === "spadmin") ||
+                            (user.role && user.role === "admin") ? (
+                            <Link
+                              to={`/them-hop-dong/${username}/${id}`}
+                              className="btn btn-primary"
+                            >
+                              Tạo Hợp Đồng
+                            </Link>
+                          ) : (
+                            "Không xác định"
+                          )}
                         </span>
                       </h6>
 
@@ -210,17 +221,32 @@ function DetailsAccount() {
                       <div className="col-xl-12 text-left">
                         <Link
                           to={`/check-in/${id}/${account.fullname}`}
-                          className="btn btn-warning"
+                          className="mx-3 mt-2"
                         >
-                          Thông Tin Check In
+                          <button disabled className="btn btn-warning">
+                            Thông Tin Check In
+                          </button>
                         </Link>
 
                         <Link
                           to={`/check-out/${id}/${account.fullname}`}
-                          className="btn btn-danger mx-3"
+                          className=" mx-3  mt-2"
                         >
-                          Thông Tin Check Out
+                          <button className="btn btn-danger" disabled>
+                            Thông Tin Check Out
+                          </button>
                         </Link>
+
+                        {account.contract && account.contract.typeContract ? (
+                          <Link
+                            to={`/check-out/${id}/${account.fullname}`}
+                            className=" mx-3  mt-2"
+                          >
+                            <button className="btn btn-success">
+                              Thông Tin Hợp Đồng
+                            </button>
+                          </Link>
+                        ) : null}
 
                         <div className="dropdown-divider"></div>
                       </div>

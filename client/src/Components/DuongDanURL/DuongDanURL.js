@@ -18,6 +18,7 @@ import CheckInTable from "../CheckIn/CheckInTable";
 import CheckOutTable from "../CheckOut/CheckOutTable";
 import TableCheckInID from "../TableCheckInID/TableCheckInID";
 import TableCheckOutID from "../TableCheckOutID/TableCheckOutID";
+import AddContract from "../AddContract/AddContract";
 function DuongDanURL() {
   return (
     <>
@@ -63,6 +64,16 @@ function DuongDanURL() {
           path="/them-bo-phan"
           roles={["spadmin", "admin"]}
           component={AddDepartment}
+        />
+        <PrivateRouter
+          path="/them-hop-dong/:username/:id"
+          roles={["spadmin", "admin"]}
+          component={AddContract}
+        />
+        <PrivateRouter
+          path="/them-hop-dong/:username/:id"
+          roles={["spadmin", "admin"]}
+          component={AddContract}
         />
         <PrivateRouter
           path="/doi-mat-khau/:username"

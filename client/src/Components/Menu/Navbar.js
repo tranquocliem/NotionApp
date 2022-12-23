@@ -87,7 +87,10 @@ function Navbar(props) {
                   </div>
                 </Link>
                 <div className="dropdown-divider"></div>
-                <Link to="/them-bo-phan" className="dropdown-item preview-item">
+                {/* <Link
+                  to="/them-hop-dong"
+                  className="dropdown-item preview-item"
+                >
                   <div className="preview-thumbnail">
                     <div className="preview-icon bg-dark rounded-circle">
                       <i
@@ -101,7 +104,7 @@ function Navbar(props) {
                       Tạo một hợp đồng
                     </p>
                   </div>
-                </Link>
+                </Link> */}
                 {/* <div className="dropdown-divider"></div>
                 <p
                   className="p-3 mb-0 text-center"

@@ -99,15 +99,15 @@ checkInRouter.post(
       });
     }
 
-    wifiPassword()
-      .then((password) => {
-        return res.status(200).json(password);
-        // console.log(password);
-      })
-      .catch((error) => {
-        return res.status(500).json(error);
-        // console.error(error);
-      });
+    // wifiPassword()
+    //   .then((password) => {
+    //     return res.status(200).json(password);
+    //     // console.log(password);
+    //   })
+    //   .catch((error) => {
+    //     return res.status(500).json(error);
+    //     // console.error(error);
+    //   });
 
     // try {
     //   let today = new Date();

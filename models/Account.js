@@ -106,6 +106,10 @@ const AccountSchema = new mongoose.Schema(
       required: true,
       default: true,
     },
+    contract: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Contract",
+    },
   },
   { timestamps: true }
 );
