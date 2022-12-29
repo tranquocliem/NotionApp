@@ -21,6 +21,7 @@
     "react-select": "^5.7.0",
     "traceroute": "^1.0.0",
     "traceroute-lite": "^0.1.0",
+    "url-status-code": "^2.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

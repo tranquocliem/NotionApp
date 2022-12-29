@@ -116,8 +116,16 @@ accRouter.post(
   "/addAccountByAdmin",
   passport.authenticate("jwt", { session: false }),
   async (req, res) => {
-    const { email, username, manv, password, role, department, position } =
-      req.body;
+    const {
+      email,
+      username,
+      fullname,
+      manv,
+      password,
+      role,
+      department,
+      position,
+    } = req.body;
     const roleAcc = req.user.role;
 
     if (roleAcc === "admin") {
@@ -135,6 +143,7 @@ accRouter.post(
             const newAccount = new Account({
               email,
               username,
+              fullname,
               manv,
               password,
               role,

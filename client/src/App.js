@@ -6,8 +6,23 @@ import Navbar from "./Components/Menu/Navbar";
 import Sidebar from "./Components/Menu/Sidebar";
 import { AuthContext } from "./Context/AuthContext";
 import { getMyAccount } from "./Service/AccountService";
+import axios from "axios";
 
 function App() {
+  async function getIP() {
+    try {
+      const response = await axios.get("/api/get-ip");
+      const ip = response.headers["x-forwarded-for"];
+      console.log(`Your IP address is ${ip}`);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    getIP();
+  }, []);
+
   const [account, setAccount] = useState(null);
   const authContext = useContext(AuthContext);
   const [visible, setVisiblity] = useState(true);
@@ -21,7 +36,8 @@ function App() {
   let main_bg = document.querySelector(".main_bg");
   useEffect(() => {
     console.log("Vào");
-    let arrEmoji = ["❄", "❊", "✽"];
+    // let arrEmoji = ["❄", "❊", "✽"];
+    let arrEmoji = ["🧨", "🎇", "🌺", "🌸"];
     if (main_bg) {
       main_bg.addEventListener("mousemove", function (e) {
         let body = document.querySelector("body");

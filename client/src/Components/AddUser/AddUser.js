@@ -11,6 +11,7 @@ function AddUser() {
 
   const [dataInput, setDataInput] = useState({
     username: "",
+    fullname: "",
     manv: "",
     email: "",
     role: "",
@@ -33,6 +34,7 @@ function AddUser() {
     setPending(true);
     const variable = {
       username: dataInput.username,
+      fullname: dataInput.fullname,
       manv: dataInput.manv,
       email: dataInput.email,
       role: dataInput.role,
@@ -115,6 +117,18 @@ function AddUser() {
                     id="exampleInputUsername1"
                     placeholder="Username"
                     value={dataInput.username}
+                    onChange={onChange}
+                  />
+                </div>
+                <div className="form-group text-left my-4">
+                  <label htmlFor="exampleInputUsername1">Họ và tên</label>
+                  <input
+                    name="fullname"
+                    type="text"
+                    className="form-control text-light"
+                    id="exampleInputFullname"
+                    placeholder="Họ và tên"
+                    value={dataInput.fullname}
                     onChange={onChange}
                   />
                 </div>

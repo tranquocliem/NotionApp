@@ -1,8 +1,9 @@
 import "./index.css";
 import TableLeader from "../Table/TableLeader/TableLeader";
 import TableDev from "../Table/TableDev/TableDev";
-import Statistical from "./Statistical";
+// import Statistical from "./Statistical";
 import PieChart from "./PieChart";
+import banner from "../../img/banner-tet-2023.png";
 
 function Home() {
   return (
@@ -104,7 +105,15 @@ function Home() {
         </div>
       </div> */}
 
-      <Statistical />
+      <div className="row">
+        <div className="col-12 grid-margin stretch-card">
+          <div className="card corona-gradient-card">
+            <img src={banner} alt="banner" />
+          </div>
+        </div>
+      </div>
+
+      {/* <Statistical /> */}
       <PieChart />
       <TableLeader />
       <TableDev />

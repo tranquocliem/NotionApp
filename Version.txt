@@ -25,3 +25,10 @@ BIG UPDATE Version 2.1.0
  + Lưu ý: chức năng chỉ dành cho admin và spadmin các loại tài khoản khác đừng nên thắc mắc sao lại không có nhé.
 
 Xin mời các bạn Dev vào test và vạch lá tìm bug, để giúp phần mềm phát triển hơn (nhưng người làm vẫn mong là không có bug). Lưu ý mình đã xóa hết tài khoản rồi nên bạn nào cần thì liên hệ mình nhé. Xin chân thành cảm ơn
+
+UPDATE Version 2.2.0
+-Thêm chức năng tạo hợp đồng cho nhân viên (chỉ spadmin với admin)
+ + Cách thực hiện: vào chi tiết nhân viên trong mục tất cả nhân viên sẽ có trường tạo hợp đồng
+ + Lưu ý: nếu nhân viên đã được tạo hợp đồng rồi thì sẽ không hiển thị chức năng này
+- 🔒 Tạm khóa chức năng Check In.
+- 🔒 Tạm khóa chức năng Check Out.
