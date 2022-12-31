@@ -22,9 +22,9 @@ export const getCheckOutByID = async (id) => {
     });
 };
 
-export const createCheckOut = () => {
+export const createCheckOut = (variable) => {
   return axios
-    .post("/api/checkout/createCheckOut")
+    .post("/api/checkout/createCheckOut", variable)
     .then((res) => {
       return res.data;
     })

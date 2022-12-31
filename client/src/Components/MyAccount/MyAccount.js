@@ -5,8 +5,8 @@ import EditAccount from "./EditAccount";
 import "./index.css";
 import moment from "moment";
 import "moment/locale/vi";
-import { addDevice, getMyDevice } from "../../Service/DeviceService";
-import { MyAlert } from "../Alert/Alert";
+import { getMyDevice } from "../../Service/DeviceService";
+// import { MyAlert } from "../Alert/Alert";
 import { Link } from "react-router-dom";
 
 function MyAccount() {
@@ -14,7 +14,7 @@ function MyAccount() {
   const [onModal, setOnModal] = useState(false);
   const { user, setUser } = useContext(AuthContext);
   const [dataDevice, setDataDevice] = useState(true);
-  const [pendingBtn, setPendingBtn] = useState(false);
+  // const [pendingBtn, setPendingBtn] = useState(false);
 
   const offModal = () => {
     setOnModal(false);
@@ -52,23 +52,23 @@ function MyAccount() {
     account && account.birthday ? account.birthday : null
   ).format("DD/MM/YYYY");
 
-  const btnAddDevice = async () => {
-    setPendingBtn(true);
-    const data = await addDevice();
-    if (data && data.status) {
-      MyAlert("succ", "Bạn đã thêm thiết bị thành công", 3000);
-      const dataDevice = await getMyDevice();
-      if (dataDevice && dataDevice.status) {
-        setDataDevice(true);
-        setPendingBtn(false);
-      } else {
-        setDataDevice(false);
-        setPendingBtn(false);
-      }
-    } else {
-      MyAlert("err", "Thêm thiết bị không thành công", 3000);
-    }
-  };
+  // const btnAddDevice = async () => {
+  //   setPendingBtn(true);
+  //   const data = await addDevice();
+  //   if (data && data.status) {
+  //     MyAlert("succ", "Bạn đã thêm thiết bị thành công", 3000);
+  //     const dataDevice = await getMyDevice();
+  //     if (dataDevice && dataDevice.status) {
+  //       setDataDevice(true);
+  //       setPendingBtn(false);
+  //     } else {
+  //       setDataDevice(false);
+  //       setPendingBtn(false);
+  //     }
+  //   } else {
+  //     MyAlert("err", "Thêm thiết bị không thành công", 3000);
+  //   }
+  // };
 
   return (
     <>
@@ -237,7 +237,7 @@ function MyAccount() {
                     </div>
                   </div>
 
-                  <div className="row">
+                  {/* <div className="row">
                     <div className="col-xl-12 text-left">
                       {!dataDevice ? (
                         <button
@@ -260,7 +260,7 @@ function MyAccount() {
 
                       <div className="dropdown-divider"></div>
                     </div>
-                  </div>
+                  </div> */}
 
                   <div className="row mt-2">
                     <div className="col-xl-12 text-left">
@@ -268,7 +268,7 @@ function MyAccount() {
                         to={`/thong-tin-check-in/${user.username}`}
                         className="mx-3 mt-2"
                       >
-                        <button className="btn btn-warning" disabled>
+                        <button className="btn btn-warning">
                           Thông Tin Check In
                         </button>
                       </Link>
@@ -277,7 +277,7 @@ function MyAccount() {
                         to={`/thong-tin-check-out/${user.username}`}
                         className="mx-3 mt-2"
                       >
-                        <button className="btn btn-danger" disabled>
+                        <button className="btn btn-danger">
                           Thông Tin Check Out
                         </button>
                       </Link>

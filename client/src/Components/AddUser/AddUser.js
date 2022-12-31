@@ -47,6 +47,7 @@ function AddUser() {
     console.log(variable);
     if (
       dataInput.username &&
+      dataInput.fullname &&
       dataInput.manv &&
       dataInput.email &&
       dataInput.role &&
@@ -76,6 +77,7 @@ function AddUser() {
     }
     if (
       !dataInput.username ||
+      !dataInput.fullname ||
       !dataInput.manv ||
       !dataInput.email ||
       !dataInput.role ||
@@ -121,7 +123,7 @@ function AddUser() {
                   />
                 </div>
                 <div className="form-group text-left my-4">
-                  <label htmlFor="exampleInputUsername1">Họ và tên</label>
+                  <label htmlFor="exampleInputUsername1">Họ và tên (*)</label>
                   <input
                     name="fullname"
                     type="text"

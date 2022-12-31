@@ -97,15 +97,29 @@ function CheckIn(props) {
     e.preventDefault();
     setPending(true);
     if (inputCapcha && inputCapcha === dataCapcha) {
-      const data = await createCheckIn();
-      if (data && data.status) {
-        setPending(false);
-        MyAlert("succ", `Bạn Đã ${data.message}`, 4500);
-        props.history.push("/tai-khoan/tranquocliem");
-      } else {
-        MyAlert("err", data.message, 3500);
-        return setPending(false);
-      }
+      navigator.geolocation.getCurrentPosition(
+        async function (position) {
+          const lat = position.coords.latitude;
+          const long = position.coords.longitude;
+          const variable = {
+            latitude: lat,
+            longitude: long,
+          };
+          const data = await createCheckIn(variable);
+          if (data && data.status) {
+            setPending(false);
+            MyAlert("succ", `Bạn Đã ${data.message}`, 4500);
+            props.history.push("/tai-khoan/tranquocliem");
+          } else {
+            MyAlert("err", data.message, 3500);
+            return setPending(false);
+          }
+        },
+        function () {
+          alert("Vui lòng mở quyền truy cập vị trí");
+          setPending(false);
+        }
+      );
     }
 
     if (!inputCapcha) {

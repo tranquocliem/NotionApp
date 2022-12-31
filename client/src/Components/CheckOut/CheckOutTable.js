@@ -44,7 +44,8 @@ function CheckOutTable() {
                     <thead>
                       <tr className="text-left">
                         <th> Ngày Giờ Check In </th>
-                        <th> Loại Check In </th>
+                        <th> Trang Thái </th>
+                        <th> Vị Trí </th>
                       </tr>
                     </thead>
                     <tbody>

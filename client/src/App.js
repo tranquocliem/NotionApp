@@ -35,7 +35,6 @@ function App() {
 
   let main_bg = document.querySelector(".main_bg");
   useEffect(() => {
-    console.log("Vào");
     // let arrEmoji = ["❄", "❊", "✽"];
     let arrEmoji = ["🧨", "🎇", "🌺", "🌸"];
     if (main_bg) {

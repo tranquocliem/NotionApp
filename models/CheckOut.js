@@ -2,10 +2,6 @@ const mongoose = require("mongoose");
 
 const CheckOutSchema = new mongoose.Schema(
   {
-    device: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Devices",
-    },
     writer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Account",
@@ -13,6 +9,12 @@ const CheckOutSchema = new mongoose.Schema(
     typecheckin: {
       type: String,
       required: true,
+    },
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
     },
     datetime: {
       type: String,

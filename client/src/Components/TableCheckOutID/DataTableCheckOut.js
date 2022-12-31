@@ -16,6 +16,12 @@ function DataTableCheckOut(props) {
             ? dataCheckOut.typecheckin
             : "Không Xác Định"}{" "}
         </td>
+        <td>
+          {"Vĩ độ: "}
+          {dataCheckOut.latitude ? dataCheckOut.latitude : "Không Xác Định"}
+          {", Kinh độ: "}
+          {dataCheckOut.longitude ? dataCheckOut.longitude : "Không Xác Định"}
+        </td>
       </tr>
     </>
   );

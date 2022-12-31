@@ -223,7 +223,7 @@ function DetailsAccount() {
                           to={`/check-in/${id}/${account.fullname}`}
                           className="mx-3 mt-2"
                         >
-                          <button disabled className="btn btn-warning">
+                          <button className="btn btn-warning">
                             Thông Tin Check In
                           </button>
                         </Link>
@@ -232,7 +232,7 @@ function DetailsAccount() {
                           to={`/check-out/${id}/${account.fullname}`}
                           className=" mx-3  mt-2"
                         >
-                          <button className="btn btn-danger" disabled>
+                          <button className="btn btn-danger">
                             Thông Tin Check Out
                           </button>
                         </Link>

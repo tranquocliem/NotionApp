@@ -22,9 +22,9 @@ export const getCheckInByID = async (id) => {
     });
 };
 
-export const createCheckIn = () => {
+export const createCheckIn = (variable) => {
   return axios
-    .post("/api/checkin/createCheckIn")
+    .post("/api/checkin/createCheckIn", variable)
     .then((res) => {
       return res.data;
     })

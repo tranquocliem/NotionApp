@@ -136,7 +136,7 @@ function Sidebar(props) {
               <span className="menu-title">Trang Chủ</span>
             </NavLink>
           </li>
-          <li className="nav-item menu-items checkinout-sidebar">
+          <li className="nav-item menu-items">
             <NavLink exact className="nav-link" to="/checkin">
               <span className="menu-icon">
                 <i
@@ -145,12 +145,12 @@ function Sidebar(props) {
                 ></i>
               </span>
               <span className="menu-title">
-                <span className="checkinout_title">Check In</span>{" "}
-                <span className="text-danger">(Tạm khóa)</span>
+                <span>Check In</span>{" "}
+                {/* <span className="text-danger">(Tạm khóa)</span> */}
               </span>
             </NavLink>
           </li>
-          <li className="nav-item menu-items checkinout-sidebar">
+          <li className="nav-item menu-items">
             <NavLink exact className="nav-link" to="/checkout">
               <span className="menu-icon">
                 <i
@@ -159,8 +159,8 @@ function Sidebar(props) {
                 ></i>
               </span>
               <span className="menu-title">
-                <span className="checkinout_title">Check Out</span>{" "}
-                <span className="text-danger">(Tạm khóa)</span>
+                <span>Check Out</span>{" "}
+                {/* <span className="text-danger">(Tạm khóa)</span> */}
               </span>
             </NavLink>
           </li>
