@@ -32,3 +32,11 @@ UPDATE Version 2.2.0
  + Lưu ý: nếu nhân viên đã được tạo hợp đồng rồi thì sẽ không hiển thị chức năng này
 - 🔒 Tạm khóa chức năng Check In.
 - 🔒 Tạm khóa chức năng Check Out.
+
+
+UPDATE Version 3.0.1
+-Thêm chức năng tạo hợp đồng cho nhân viên (chỉ spadmin với admin)
+ + Cách thực hiện: vào chi tiết nhân viên trong mục tất cả nhân viên sẽ có trường tạo hợp đồng
+ + Lưu ý: nếu nhân viên đã được tạo hợp đồng rồi thì sẽ không hiển thị chức năng này
+- 🔓 Đã mở khóa chức năng Check In.
+- 🔓 Đã mở khóa chức năng Check Out.
