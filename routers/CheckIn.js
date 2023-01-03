@@ -13,14 +13,17 @@ checkInRouter.post(
     const { latitude, longitude } = req.body;
 
     try {
-      let today = new Date();
+      let vietname_datetime_str = new Date().toLocaleString("en-UK", {
+        timeZone: "Asia/Ho_Chi_Minh",
+        hour12: true,
+      });
 
       const newCheckIn = new CheckIn({
         writer: id,
         typecheckin: "Đã Check In",
         latitude,
         longitude,
-        datetime: today.toLocaleString("en-UK"),
+        datetime: vietname_datetime_str,
       });
       const data = await newCheckIn.save(newCheckIn);
       if (data) {

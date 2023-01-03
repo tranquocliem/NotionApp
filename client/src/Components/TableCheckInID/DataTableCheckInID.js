@@ -4,7 +4,7 @@ function DataTableCheckInID(props) {
   return (
     <>
       <tr className="text-left">
-        <td>
+        <td className="text-uppercase">
           {" "}
           {dataCheckIn.datetime ? dataCheckIn.datetime : "Không Xác Định"}{" "}
         </td>

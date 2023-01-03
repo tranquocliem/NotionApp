@@ -4,7 +4,7 @@ function CheckOutDataTable(props) {
   return (
     <>
       <tr className="text-left">
-        <td>
+        <td className="text-uppercase">
           {" "}
           {dataCheckOut.datetime
             ? dataCheckOut.datetime
