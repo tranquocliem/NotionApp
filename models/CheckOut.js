@@ -6,7 +6,7 @@ const CheckOutSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Account",
     },
-    typecheckin: {
+    typecheckout: {
       type: String,
       required: true,
     },
@@ -19,6 +19,9 @@ const CheckOutSchema = new mongoose.Schema(
     datetime: {
       type: String,
       required: true,
+    },
+    note: {
+      type: String,
     },
   },
   { timestamps: true }

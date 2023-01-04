@@ -18,12 +18,35 @@ checkInRouter.post(
         hour12: true,
       });
 
+      let time = new Date(vietname_datetime_str);
+      let h = time.getHours();
+      let m = time.getMinutes();
+
+      var note = "";
+
+      if (h <= 8 && m <= 20) {
+        note = "Đúng Giờ";
+      }
+
+      if (h <= 13 && m <= 20) {
+        note = "Đúng Giờ";
+      }
+
+      if (h > 8 || m > 20) {
+        note = "Trễ Giờ";
+      }
+
+      if (h > 13 || m > 20) {
+        note = "Trễ Giờ";
+      }
+
       const newCheckIn = new CheckIn({
         writer: id,
         typecheckin: "Đã Check In",
         latitude,
         longitude,
         datetime: vietname_datetime_str,
+        note,
       });
       const data = await newCheckIn.save(newCheckIn);
       if (data) {

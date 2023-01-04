@@ -217,25 +217,22 @@ function DetailsAccount() {
                   </div>
                   {(user.role && user.role === "spadmin") ||
                   (user.role && user.role === "admin") ? (
-                    <div className="row mt-2">
+                    <div className="row">
                       <div className="col-xl-12 text-left">
-                        <Link
-                          to={`/check-in/${id}/${account.fullname}`}
-                          className="mx-3 mt-2"
-                        >
+                        <Link to={`/check-in-out/${id}/${account.fullname}`}>
                           <button className="btn btn-warning">
-                            Thông Tin Check In
+                            Thông Tin Check In - Out
                           </button>
                         </Link>
 
-                        <Link
+                        {/* <Link
                           to={`/check-out/${id}/${account.fullname}`}
                           className=" mx-3  mt-2"
                         >
                           <button className="btn btn-danger">
                             Thông Tin Check Out
                           </button>
-                        </Link>
+                        </Link> */}
 
                         {account.contract && account.contract.typeContract ? (
                           <Link

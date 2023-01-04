@@ -1,6 +1,8 @@
 function CheckInDataTable(props) {
   const dataCheckIn = props.dataCheckIn;
 
+  // let mydatetime = new Date(dataCheckIn.datetime && dataCheckIn.datetime);
+
   return (
     <>
       <tr className="text-left">

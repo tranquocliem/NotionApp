@@ -20,6 +20,10 @@ const CheckInSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    note: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );

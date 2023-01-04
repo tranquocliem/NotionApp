@@ -262,23 +262,11 @@ function MyAccount() {
                     </div>
                   </div> */}
 
-                  <div className="row mt-2">
+                  <div className="row">
                     <div className="col-xl-12 text-left">
-                      <Link
-                        to={`/thong-tin-check-in/${user.username}`}
-                        className="mx-3 mt-2"
-                      >
+                      <Link to={`/thong-tin-check-in-out/${user.username}`}>
                         <button className="btn btn-warning">
-                          Thông Tin Check In
-                        </button>
-                      </Link>
-
-                      <Link
-                        to={`/thong-tin-check-out/${user.username}`}
-                        className="mx-3 mt-2"
-                      >
-                        <button className="btn btn-danger">
-                          Thông Tin Check Out
+                          Thông Tin Check In - Out
                         </button>
                       </Link>
 

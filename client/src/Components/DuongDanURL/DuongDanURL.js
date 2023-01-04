@@ -14,11 +14,12 @@ import ChangePass from "../ChangPass/ChangePass";
 import DetailsAccount from "../DetailsAccount/DetailsAccount";
 import CheckIn from "../CheckIn/CheckIn";
 import CheckOut from "../CheckOut/CheckOut";
-import CheckInTable from "../CheckIn/CheckInTable";
-import CheckOutTable from "../CheckOut/CheckOutTable";
-import TableCheckInID from "../TableCheckInID/TableCheckInID";
-import TableCheckOutID from "../TableCheckOutID/TableCheckOutID";
+// import CheckOutTable from "../CheckInOutTable/CheckOutTable";
+// import TableCheckInID from "../TableCheckInID/TableCheckInID";
+// import TableCheckOutID from "../TableCheckOutID/TableCheckOutID";
 import AddContract from "../AddContract/AddContract";
+import CheckInOutTable from "../CheckInOutTable/CheckInOutTable";
+import TableCheckInOutID from "../TableCheckInOutID/TableCheckInOutID";
 function DuongDanURL() {
   return (
     <>
@@ -91,26 +92,26 @@ function DuongDanURL() {
           component={CheckOut}
         />
         <PrivateRouter
-          path="/thong-tin-check-in/:user"
+          path="/thong-tin-check-in-out/:user"
           roles={["spadmin", "admin", "leader", "member"]}
-          component={CheckInTable}
+          component={CheckInOutTable}
         />
-        <PrivateRouter
+        {/* <PrivateRouter
           path="/thong-tin-check-out/:user"
           roles={["spadmin", "admin", "leader", "member"]}
           component={CheckOutTable}
-        />
+        /> */}
 
         <PrivateRouter
-          path="/check-in/:id/:name"
+          path="/check-in-out/:id/:name"
           roles={["spadmin", "admin", "leader", "member"]}
-          component={TableCheckInID}
+          component={TableCheckInOutID}
         />
-        <PrivateRouter
+        {/* <PrivateRouter
           path="/check-out/:id/:name"
           roles={["spadmin", "admin", "leader", "member"]}
           component={TableCheckOutID}
-        />
+        /> */}
 
         {/* <Route path="*" component={NotFound} /> */}
       </Switch>

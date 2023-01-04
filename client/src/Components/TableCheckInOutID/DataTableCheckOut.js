@@ -1,4 +1,4 @@
-function CheckOutDataTable(props) {
+function DataTableCheckOut(props) {
   const dataCheckOut = props.dataCheckOut;
 
   return (
@@ -12,8 +12,8 @@ function CheckOutDataTable(props) {
         </td>
         <td>
           {" "}
-          {dataCheckOut.typecheckin
-            ? dataCheckOut.typecheckin
+          {dataCheckOut.typecheckout
+            ? dataCheckOut.typecheckout
             : "Không Xác Định"}{" "}
         </td>
         <td>
@@ -27,4 +27,4 @@ function CheckOutDataTable(props) {
   );
 }
 
-export default CheckOutDataTable;
+export default DataTableCheckOut;

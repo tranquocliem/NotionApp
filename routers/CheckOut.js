@@ -19,7 +19,7 @@ checkOutRouter.post(
 
       const newCheckOut = new CheckOut({
         writer: id,
-        typecheckin: "Đã Check Out",
+        typecheckout: "Đã Check Out",
         latitude,
         longitude,
         datetime: vietname_datetime_str,

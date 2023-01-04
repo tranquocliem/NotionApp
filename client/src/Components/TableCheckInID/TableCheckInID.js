@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCheckInByID } from "../../Service/CheckInService";
-import DataTableCheckInID from "./DataTableCheckInID";
+import DataTableCheckInID from "../TableCheckInOutID/DataTableCheckInID";
 
 function TableCheckInID() {
   const [dataCheckIn, setDataCheckIn] = useState([]);
@@ -9,6 +9,7 @@ function TableCheckInID() {
   const name = useParams().name;
   console.log(id);
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     async function getAPICheckIn() {
       const data = await getCheckInByID(id);
       if (data) {

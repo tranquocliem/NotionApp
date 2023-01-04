@@ -8,6 +8,7 @@ function CheckOutTable() {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     async function getAPICheckOut() {
       const data = await getMyCheckOut();
       if (data) {

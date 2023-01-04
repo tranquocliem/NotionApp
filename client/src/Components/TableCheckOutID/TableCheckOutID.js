@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getCheckOutByID } from "../../Service/CheckOutService";
-import DataTableCheckOut from "./DataTableCheckOut";
+import DataTableCheckOut from "../TableCheckInOutID/DataTableCheckOut";
 
 function TableCheckOutID() {
   const [dataCheckOut, setDataCheckOut] = useState([]);
   const id = useParams().id;
   const name = useParams().name;
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
     async function getAPICheckOut() {
       const data = await getCheckOutByID(id);
       if (data) {
