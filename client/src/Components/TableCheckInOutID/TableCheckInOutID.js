@@ -99,7 +99,7 @@ function TableCheckInOutID() {
                     <table className="table">
                       <thead>
                         <tr className="text-left">
-                          <th> Ngày Giờ Check Out </th>
+                          <th> Ngày Giờ Check In </th>
                           <th> Trạng Thái </th>
                           <th> Ghi Chú </th>
                           <th> Vị Trí </th>
@@ -133,7 +133,7 @@ function TableCheckInOutID() {
                     <table className="table">
                       <thead>
                         <tr className="text-left">
-                          <th> Ngày Giờ Check In </th>
+                          <th> Ngày Giờ Check Out </th>
                           <th> Trạng Thái </th>
                           <th> Vị Trí </th>
                         </tr>
