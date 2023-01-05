@@ -16,6 +16,7 @@ function CheckInDataTable(props) {
             ? dataCheckIn.typecheckin
             : "Không Xác Định"}{" "}
         </td>
+        <td> {dataCheckIn.note ? dataCheckIn.note : "Không Xác Định"} </td>
         <td>
           {"Vĩ độ: "}
           {dataCheckIn.latitude ? dataCheckIn.latitude : "Không Xác Định"}

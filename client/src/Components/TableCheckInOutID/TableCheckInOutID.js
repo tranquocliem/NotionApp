@@ -97,6 +97,7 @@ function TableCheckInOutID() {
                         <tr className="text-left">
                           <th> Ngày Giờ Check In </th>
                           <th> Trạng Thái </th>
+                          <th> Ghi Chú </th>
                           <th> Vị Trí </th>
                         </tr>
                       </thead>

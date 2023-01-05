@@ -25,19 +25,19 @@ checkInRouter.post(
       var note = "";
 
       if (h <= 8 && m <= 20) {
-        note = "Đúng Giờ";
+        note = "Đúng Giờ Buổi Sáng";
       }
 
-      if (h <= 13 && m <= 20) {
-        note = "Đúng Giờ";
+      if (h >= 12 && h <= 13 && m <= 20) {
+        note = "Đúng Giờ Buổi Chiều";
       }
 
-      if (h > 8 || m > 20) {
-        note = "Trễ Giờ";
+      if ((h > 8 && h <= 13) || (h === 8 && m > 20)) {
+        note = "Trễ Giờ Buổi Sáng";
       }
 
-      if (h > 13 || m > 20) {
-        note = "Trễ Giờ";
+      if (h > 13 || (h === 13 && m > 20)) {
+        note = "Trễ Giờ Buổi Chiều";
       }
 
       const newCheckIn = new CheckIn({
