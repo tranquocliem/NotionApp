@@ -73,18 +73,21 @@ function CheckInTable() {
         <div style={{ height: "100vh" }}>Không có dữ liệu</div>
       ) : (
         <>
-          <div className="row">
-            <div className="col-12 grid-margin d-flex">
-              <CSVLink
-                className="btn btn-success"
-                data={dataCheckInOut && dataCheckInOut}
-                headers={headers}
-                filename={`${user.fullname} CheckIn.csv`}
-              >
-                <i className="fa-solid fa-file-csv"></i> Xuất Excel
-              </CSVLink>
+          {user.role === "spadmin" || user.role === "admin" ? (
+            <div className="row">
+              <div className="col-12 grid-margin d-flex">
+                <CSVLink
+                  className="btn btn-success"
+                  data={dataCheckInOut && dataCheckInOut}
+                  headers={headers}
+                  filename={`${user.fullname} CheckIn.csv`}
+                >
+                  <i className="fa-solid fa-file-csv"></i> Xuất Excel
+                </CSVLink>
+              </div>
             </div>
-          </div>
+          ) : null}
+
           <div className="row">
             <div className="col-12 grid-margin">
               <div className="card">

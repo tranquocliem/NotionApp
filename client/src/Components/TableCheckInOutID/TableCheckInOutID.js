@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../Context/AuthContext";
 import { getCheckInByID } from "../../Service/CheckInService";
 import { getCheckOutByID } from "../../Service/CheckOutService";
 import DataTableCheckInID from "./DataTableCheckInID";
@@ -10,6 +11,7 @@ function TableCheckInOutID() {
   const [dataCheckIn, setDataCheckIn] = useState([]);
   const [dataCheckOut, setDataCheckOut] = useState([]);
   const [dataCheckInOut, setDataCheckInOut] = useState([]);
+  const { user } = useContext(AuthContext);
   const id = useParams().id;
   const name = useParams().name;
 
@@ -17,7 +19,7 @@ function TableCheckInOutID() {
     { label: "Ngày Giờ CheckIn", key: "dateTimeIn" },
     { label: "Trang Thái CheckIn", key: "typecheckin" },
     { label: "Ghi Chú CheckIn", key: "note" },
-    { label: "Ngày Giờ CheckIn", key: "dateTimeOut" },
+    { label: "Ngày Giờ CheckOut", key: "dateTimeOut" },
     { label: "Trang Thái CheckOut", key: "typecheckout" },
   ];
 
@@ -72,18 +74,20 @@ function TableCheckInOutID() {
         <div style={{ height: "100vh" }}>Không có dữ liệu</div>
       ) : (
         <>
-          <div className="row">
-            <div className="col-12 grid-margin d-flex">
-              <CSVLink
-                className="btn btn-success"
-                data={dataCheckInOut && dataCheckInOut}
-                headers={headers}
-                filename={`${name} CheckInOut.csv`}
-              >
-                <i className="fa-solid fa-file-csv"></i> Xuất Excel
-              </CSVLink>
+          {user.role === "spadmin" || user.role === "admin" ? (
+            <div className="row">
+              <div className="col-12 grid-margin d-flex">
+                <CSVLink
+                  className="btn btn-success"
+                  data={dataCheckInOut && dataCheckInOut}
+                  headers={headers}
+                  filename={`${name} CheckInOut.csv`}
+                >
+                  <i className="fa-solid fa-file-csv"></i> Xuất Excel
+                </CSVLink>
+              </div>
             </div>
-          </div>
+          ) : null}
           <div className="row">
             <div className="col-12 grid-margin">
               <div className="card">
@@ -95,7 +99,7 @@ function TableCheckInOutID() {
                     <table className="table">
                       <thead>
                         <tr className="text-left">
-                          <th> Ngày Giờ Check In </th>
+                          <th> Ngày Giờ Check Out </th>
                           <th> Trạng Thái </th>
                           <th> Ghi Chú </th>
                           <th> Vị Trí </th>
